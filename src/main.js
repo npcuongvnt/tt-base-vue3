@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
-import i18n from './plugins/i18n';
+import i18n from './i18n';
 
 import PrimeVue from 'primevue/config';
 import AutoComplete from 'primevue/autocomplete';
@@ -102,6 +102,7 @@ import TriStateCheckbox from 'primevue/tristatecheckbox';
 import VirtualScroller from 'primevue/virtualscroller';
 
 import BlockViewer from '@/components/BlockViewer.vue';
+import LanguageSwitcher from '@/components/LanguageSwitcher.vue';
 
 import '@/assets/styles.scss';
 
@@ -120,6 +121,7 @@ app.directive('ripple', Ripple);
 app.directive('styleclass', StyleClass);
 
 app.component('BlockViewer', BlockViewer);
+app.component('LanguageSwitcher', LanguageSwitcher);
 
 app.component('Accordion', Accordion);
 app.component('AccordionTab', AccordionTab);

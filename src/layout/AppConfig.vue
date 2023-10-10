@@ -6,6 +6,7 @@ import Sidebar from 'primevue/sidebar';
 
 import { ref } from 'vue';
 import { useLayout } from '@/layout/composables/layout';
+import LanguageSwitcher from '../components/LanguageSwitcher.vue';
 
 defineProps({
     simple: {
@@ -54,6 +55,10 @@ const applyScale = () => {
     </button>
 
     <Sidebar v-model:visible="visible" position="right" :transitionOptions="'.3s cubic-bezier(0, 0, 0.2, 1)'" class="layout-config-sidebar w-20rem">
+        <h5>Language</h5>
+        <div class="flex align-items-center">
+            <LanguageSwitcher></LanguageSwitcher>
+        </div>
         <h5>Scale</h5>
         <div class="flex align-items-center">
             <Button icon="pi pi-minus" type="button" @click="decrementScale()" class="p-button-text p-button-rounded w-2rem h-2rem mr-2" :disabled="layoutConfig.scale.value === scales[0]"></Button>
