@@ -106,11 +106,16 @@ import LanguageSwitcher from '@/components/LanguageSwitcher.vue';
 
 import '@/assets/styles.scss';
 
+import vi from '@/i18n/vi.json';
+
 const app = createApp(App);
 
 app.use(router);
 app.use(i18n);
-app.use(PrimeVue, { ripple: true });
+app.use(PrimeVue, {
+    ripple: true,
+    locale: vi.resource_control
+});
 app.use(ToastService);
 app.use(DialogService);
 app.use(ConfirmationService);

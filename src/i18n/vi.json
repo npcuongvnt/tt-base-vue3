@@ -3,7 +3,7 @@
         "vi": "Tiếng Việt",
         "en": "Tiếng Anh"
     },
-    "control": {
+    "resource_control": {
         "startsWith": "Bắt đầu với",
         "contains": "Chứa",
         "notContains": "Không chứa",
@@ -122,5 +122,15 @@
             "rotateRight": "Quay phải",
             "rotateLeft": "Quay trái"
         }
+    },
+    "resource_appconfig": {
+        "language": "Ngôn ngữ",
+        "scale": "Tỷ lệ",
+        "menu_type": "Loại menu",
+        "menu_type_static": "Tĩnh",
+        "menu_type_overlay": "Lớp phủ",
+        "input_style": "Kiểu nhập liệu",
+        "input_style_outlined": "Bao ngoài",
+        "input_style_filled": "Tràn"
     }
 }

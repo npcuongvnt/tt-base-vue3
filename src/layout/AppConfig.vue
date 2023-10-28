@@ -55,11 +55,11 @@ const applyScale = () => {
     </button>
 
     <Sidebar v-model:visible="visible" position="right" :transitionOptions="'.3s cubic-bezier(0, 0, 0.2, 1)'" class="layout-config-sidebar w-20rem">
-        <h5>Language</h5>
+        <h5>{{ $t('resource_appconfig.language') }}</h5>
         <div class="flex align-items-center">
             <LanguageSwitcher></LanguageSwitcher>
         </div>
-        <h5>Scale</h5>
+        <h5>{{ $t('resource_appconfig.scale') }}</h5>
         <div class="flex align-items-center">
             <Button icon="pi pi-minus" type="button" @click="decrementScale()" class="p-button-text p-button-rounded w-2rem h-2rem mr-2" :disabled="layoutConfig.scale.value === scales[0]"></Button>
             <div class="flex gap-2 align-items-center">
@@ -69,30 +69,30 @@ const applyScale = () => {
         </div>
 
         <template v-if="!simple">
-            <h5>Menu Type</h5>
+            <h5>{{ $t('resource_appconfig.menu_type') }}</h5>
             <div class="flex">
                 <div class="field-radiobutton flex-1">
                     <RadioButton name="menuMode" value="static" v-model="layoutConfig.menuMode.value" inputId="mode1"></RadioButton>
-                    <label for="mode1">Static</label>
+                    <label for="mode1">{{ $t('resource_appconfig.menu_type_static') }}</label>
                 </div>
 
                 <div class="field-radiobutton flex-1">
                     <RadioButton name="menuMode" value="overlay" v-model="layoutConfig.menuMode.value" inputId="mode2"></RadioButton>
-                    <label for="mode2">Overlay</label>
+                    <label for="mode2">{{ $t('resource_appconfig.menu_type_overlay') }}</label>
                 </div>
             </div>
         </template>
 
         <template v-if="!simple">
-            <h5>Input Style</h5>
+            <h5>{{ $t('resource_appconfig.input_style') }}</h5>
             <div class="flex">
                 <div class="field-radiobutton flex-1">
                     <RadioButton name="inputStyle" value="outlined" v-model="layoutConfig.inputStyle.value" inputId="outlined_input"></RadioButton>
-                    <label for="outlined_input">Outlined</label>
+                    <label for="outlined_input">{{ $t('resource_appconfig.input_style_outlined') }}</label>
                 </div>
                 <div class="field-radiobutton flex-1">
                     <RadioButton name="inputStyle" value="filled" v-model="layoutConfig.inputStyle.value" inputId="filled_input"></RadioButton>
-                    <label for="filled_input">Filled</label>
+                    <label for="filled_input">{{ $t('resource_appconfig.input_style_filled') }}</label>
                 </div>
             </div>
 

@@ -3,7 +3,7 @@
         "vi": "Vietnames",
         "en": "English"
     },
-    "control": {
+    "resource_control": {
         "startsWith": "Starts with",
         "contains": "Contains",
         "notContains": "Not contains",
@@ -122,5 +122,15 @@
             "rotateRight": "Rotate Right",
             "rotateLeft": "Rotate Left"
         }
+    },
+    "resource_appconfig": {
+        "language": "Language",
+        "scale": "Scale",
+        "menu_type": "Menu Type",
+        "menu_type_static": "Static",
+        "menu_type_overlay": "Overlay",
+        "input_style": "Input Style",
+        "input_style_outlined": "Outlined",
+        "input_style_filled": "Filled"
     }
 }
