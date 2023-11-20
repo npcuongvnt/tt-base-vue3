@@ -132,5 +132,11 @@
         "input_style": "Kiểu nhập liệu",
         "input_style_outlined": "Bao ngoài",
         "input_style_filled": "Tràn"
+    },
+    "resource_404": {
+        "not_found": "Không tìm thấy trang",
+        "not_found_res": "Tài nguyên được yêu cầu không có sẵn.",
+        "home": "Trang chủ",
+        "back_home": "Trở về trang chủ"
     }
 }

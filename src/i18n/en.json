@@ -132,5 +132,11 @@
         "input_style": "Input Style",
         "input_style_outlined": "Outlined",
         "input_style_filled": "Filled"
+    },
+    "resource_404": {
+        "not_found": "Not Found",
+        "not_found_res": "Requested resource is not available.",
+        "home": "HomePage",
+        "back_home": "Back to Home page"
     }
 }
