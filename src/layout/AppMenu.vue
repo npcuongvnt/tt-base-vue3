@@ -147,17 +147,6 @@ const model = ref([
                 label: 'Documentation',
                 icon: 'pi pi-fw pi-question',
                 to: '/documentation'
-            },
-            {
-                label: 'View Source',
-                icon: 'pi pi-fw pi-search',
-                url: 'https://github.com/primefaces/sakai-vue',
-                target: '_blank'
-            },
-            {
-                label: 'Nuxt Version',
-                url: 'https://github.com/primefaces/sakai-nuxt',
-                icon: 'pi pi-fw pi-star'
             }
         ]
     }
