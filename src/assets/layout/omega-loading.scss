@@ -1,0 +1,38 @@
+.omega-loading-class{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(221, 221, 221, 0.2);
+    z-index: 99999;
+    top: 0;
+    left: 0;
+    .loading-cover{
+        display: block;
+        width: 100%;
+        height: 100%;
+        background-color: white;
+        position: absolute;
+        opacity: .2;
+        z-index: 9999;
+    }
+    .loading-svg{
+        height: 60px;
+        width: 60px;
+        position: relative;
+        .effect{
+            animation: rotate 1s ease infinite;
+            -webkit-animation: rotate 1s ease infinite;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 50%;
+            background: transparent url('../images/icons/loading.svg') no-repeat center;
+            background-size: 100%;
+            transition: all 0.3s ease;
+        }
+    }
+}

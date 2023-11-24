@@ -300,4 +300,10 @@ const applyScale = () => {
     </Sidebar>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.layout-config-button{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+</style>

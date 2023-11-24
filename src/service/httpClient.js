@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { AUTH } from '../common/constant';
+import { AUTH } from '../commons/constant';
 
 // method
 export const GET = 'GET';

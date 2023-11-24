@@ -1,7 +1,10 @@
 <script setup>
-import { onMounted, reactive, ref, watch } from 'vue';
+import { onMounted, reactive, ref, watch, getCurrentInstance } from 'vue';
 import ProductService from '@/service/ProductService';
 import { useLayout } from '@/layout/composables/layout';
+
+const {proxy} = getCurrentInstance();
+window._nxchien = proxy;
 
 const { isDarkTheme } = useLayout();
 

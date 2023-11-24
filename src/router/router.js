@@ -1,5 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 import AppLayout from '@/layout/AppLayout.vue';
+import commonFunction from '@/commons/commonFunction.js';
+import authService from '../commons/authService';
 
 const router = createRouter({
     history: createWebHashHistory(),
@@ -11,7 +13,11 @@ const router = createRouter({
                 {
                     path: '/',
                     name: 'dashboard',
-                    component: () => import('@/views/Dashboard.vue')
+                    component: () => import('@/views/Dashboard.vue'),
+                    meta:{
+                        anonymous: true
+                    }
+
                 },
                 {
                     path: '/uikit/formlayout',
@@ -157,7 +163,10 @@ const router = createRouter({
         {
             path: '/auth/login',
             name: 'login',
-            component: () => import('@/views/pages/auth/Login.vue')
+            component: () => import('@/views/pages/auth/Login.vue'),
+            meta:{
+                anonymous: true
+            }
         },
         {
             path: '/auth/access',
@@ -170,6 +179,25 @@ const router = createRouter({
             component: () => import('@/views/pages/auth/Error.vue')
         }
     ]
+});
+
+router.afterEach(() => {
+    commonFunction.unMask();
+});
+
+router.beforeEach(async (toRouter, from, next) => {
+    if(toRouter.meta?.anonymous){
+        next();
+        return;
+    }
+
+    // token hết hạn thì direct về trang đăng nhập
+    if(!authService.isAuthenticated()){
+        next('/auth/login');
+        return;
+    }
+
+    next();
 });
 
 export default router;

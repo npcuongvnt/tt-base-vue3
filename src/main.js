@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 import App from './App.vue';
-import store from './store';
-import router from './router';
+import store from './store/store.js';
+import router from './router/router.js';
 import i18n from './i18n';
 
 import PrimeVue from 'primevue/config';
@@ -111,6 +111,11 @@ import vi from '@/i18n/vi.json';
 
 const app = createApp(App);
 
+import { pluginInstall } from './commons/globalPlugin.js';
+pluginInstall(app);
+
+import { initCommonFuntion } from './commons/commonFunction.js';
+initCommonFuntion(app);
 app.use(store);
 app.use(router);
 app.use(i18n);
