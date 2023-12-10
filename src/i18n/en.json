@@ -138,5 +138,14 @@
         "not_found_res": "Requested resource is not available.",
         "home": "HomePage",
         "back_home": "Back to Home page"
+    },
+    "resource_authen": {
+        "welcome": "Welcome",
+        "sign_to_continue": "Sign in to continue",
+        "username": "Username",
+        "password": "Password",
+        "forgot_password": "Forgot password?",
+        "remember": "Remember me",
+        "sign_in": "Sign In"
     }
 }

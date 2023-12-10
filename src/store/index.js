@@ -1,5 +1,6 @@
 import { createStore, createLogger } from 'vuex';
-import context from './modules/context';
+import auth from './auth.module';
+import context from './context.module';
 import user from './modules/user';
 import role from './modules/role';
 import product from './modules/product';
@@ -12,6 +13,7 @@ export default createStore({
     mutations: {},
     actions: {},
     modules: {
+        auth,
         context,
         user,
         role,

@@ -10,7 +10,7 @@ export default class baseAPI {
 
     constructor() {
         this.baseUrl = '';
-        this.apiName = 'BUSSINESS';
+        this.apiName = 'business';
         this.controllerName = '';
     }
 

@@ -138,5 +138,14 @@
         "not_found_res": "Tài nguyên được yêu cầu không có sẵn.",
         "home": "Trang chủ",
         "back_home": "Trở về trang chủ"
+    },
+    "resource_authen": {
+        "welcome": "Chào mừng",
+        "sign_to_continue": "Đăng nhập để tiếp tục",
+        "username": "Tên đăng nhập",
+        "password": "Mật khẩu",
+        "forgot_password": "Quên mật khẩu?",
+        "remember": "Ghi nhớ đăng nhập",
+        "sign_in": "Đăng Nhập"
     }
 }
