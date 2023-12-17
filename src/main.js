@@ -111,8 +111,8 @@ import vi from '@/i18n/vi.json';
 
 const app = createApp(App);
 
-app.use(store);
 app.use(router);
+app.use(store);
 app.use(i18n);
 app.use(PrimeVue, {
     ripple: true,
@@ -220,4 +220,13 @@ app.component('TreeTable', TreeTable);
 app.component('TriStateCheckbox', TriStateCheckbox);
 app.component('VirtualScroller', VirtualScroller);
 
-app.mount('#app');
+fetch(import.meta.env.BASE_URL + 'config.json')
+    .then((response) => response.json())
+    .then((config) => {
+        // either use window.config
+        window.config = config;
+        // or use [Vue Global Config][1]
+        app.config.globalProperties.config = config;
+        // FINALLY, mount the app
+        app.mount('#app');
+    });

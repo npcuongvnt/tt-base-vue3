@@ -1,10 +1,10 @@
 import httpClient from './httpClient';
 
-export default class AuthService {
-    baseUrl;
+class AuthService {
+    baseUrl = '';
 
     initAPIUrl() {
-        this.baseUrl = window._api['auth'] + '/auth';
+        this.baseUrl = window.config['API_URL'] + '/auth';
     }
 
     getAPIUrl() {
@@ -39,3 +39,5 @@ export default class AuthService {
         return httpClient.postAsync(req);
     }
 }
+
+export default new AuthService();

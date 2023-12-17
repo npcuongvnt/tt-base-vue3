@@ -146,30 +146,56 @@ const router = createRouter({
         {
             path: '/landing',
             name: 'landing',
-            component: () => import('@/views/pages/Landing.vue')
+            component: () => import('@/views/pages/Landing.vue'),
+            meta: () => ({ anonymous: true })
         },
         {
             path: '/pages/notfound',
             name: 'notfound',
-            component: () => import('@/views/pages/NotFound.vue')
+            component: () => import('@/views/pages/NotFound.vue'),
+            meta: () => ({ anonymous: true })
         },
-
         {
             path: '/auth/login',
             name: 'login',
-            component: () => import('@/views/pages/auth/Login.vue')
+            component: () => import('@/views/pages/auth/Login.vue'),
+            meta: () => ({ anonymous: true })
         },
         {
             path: '/auth/access',
             name: 'accessDenied',
-            component: () => import('@/views/pages/auth/Access.vue')
+            component: () => import('@/views/pages/auth/Access.vue'),
+            meta: () => ({ anonymous: true })
         },
         {
             path: '/auth/error',
             name: 'error',
-            component: () => import('@/views/pages/auth/Error.vue')
+            component: () => import('@/views/pages/auth/Error.vue'),
+            meta: () => ({ anonymous: true })
         }
     ]
+});
+
+router.beforeEach(async (toRouter, from, next) => {
+    if (toRouter.meta?.anonymous) {
+        next();
+        return;
+    }
+
+    let isAuthenticate = true;
+
+    //TODO
+    // token hết hạn thì direct về trang đăng nhập
+    if (!isAuthenticate) {
+        next('/auth/login');
+        return;
+    }
+
+    next();
+});
+
+router.afterEach(() => {
+    console.log('route page done');
 });
 
 export default router;

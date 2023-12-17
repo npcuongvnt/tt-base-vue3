@@ -1,17 +1,44 @@
 <script setup>
 import { useLayout } from '@/layout/composables/layout';
 import { ref, computed } from 'vue';
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
 import AppConfig from '@/layout/AppConfig.vue';
 
+const store = useStore();
+const router = useRouter();
 const { layoutConfig } = useLayout();
-const email = ref('');
+const username = ref('');
 const password = ref('');
 const checked = ref(false);
+const loading = ref(false);
+const message = ref('');
 // const loginLabel = $t('resource_authen.sign_in');
 
 const logoUrl = computed(() => {
     return `layout/images/${layoutConfig.darkTheme.value ? 'logo-white' : 'logo-dark'}.svg`;
 });
+
+/**
+ * Đăng nhập
+ */
+function signIn() {
+    loading.value = true;
+
+    store.dispatch('auth/login', { username, password }).then(
+        () => {
+            loading.value = false;
+            router.push({
+                name: 'dashboard'
+            });
+        },
+        (error) => {
+            console.log(error);
+            message.value = error.message;
+            loading.value = false;
+        }
+    );
+}
 </script>
 
 <template>
@@ -27,11 +54,13 @@ const logoUrl = computed(() => {
                     </div>
 
                     <div>
-                        <label for="email1" class="block text-900 text-xl font-medium mb-2">{{ $t('resource_authen.username') }}</label>
-                        <InputText id="email1" type="text" placeholder="Email address" class="w-full md:w-30rem mb-5" style="padding: 1rem" v-model="email" />
+                        <label for="username1" class="block text-900 text-xl font-medium mb-2">{{ $t('resource_authen.username') }}</label>
+                        <InputText id="username1" type="text" placeholder="Username" class="w-full md:w-30rem mb-5" style="padding: 1rem" v-model="username" />
 
                         <label for="password1" class="block text-900 font-medium text-xl mb-2">{{ $t('resource_authen.password') }}</label>
                         <Password id="password1" v-model="password" placeholder="Password" :toggleMask="true" class="w-full mb-3" inputClass="w-full" :inputStyle="{ padding: '1rem' }"></Password>
+
+                        <span v-if="message">{{ message }}</span>
 
                         <div class="flex align-items-center justify-content-between mb-5 gap-5">
                             <div class="flex align-items-center">
@@ -40,7 +69,7 @@ const logoUrl = computed(() => {
                             </div>
                             <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)">{{ $t('resource_authen.forgot_password') }}</a>
                         </div>
-                        <Button label="Sign In" class="w-full p-3 text-xl"></Button>
+                        <Button label="Sign In" class="w-full p-3 text-xl" :loading="loading" @click="signIn()"></Button>
                     </div>
                 </div>
             </div>
