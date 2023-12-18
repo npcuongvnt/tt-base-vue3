@@ -10,13 +10,13 @@ export default class baseAPI {
 
     constructor() {
         this.baseUrl = '';
-        this.apiName = 'business';
+        this.apiName = 'BUSINESS_API';
         this.controllerName = '';
     }
 
     initAPIUrl() {
         if (this.apiName) {
-            this.baseUrl = window._api[this.apiName] + '/' + this.controllerName;
+            this.baseUrl = window.config[this.apiName] + '/' + this.controllerName;
         }
     }
 
@@ -30,7 +30,7 @@ export default class baseAPI {
 
     paging(payload) {
         let req = {
-            url: this.getAPIUrl() + 'paging',
+            url: this.getAPIUrl() + '/paging',
             data: payload
         };
 

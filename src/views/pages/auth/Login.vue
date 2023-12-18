@@ -23,14 +23,30 @@ const logoUrl = computed(() => {
  * Đăng nhập
  */
 function signIn() {
+    message.value = '';
     loading.value = true;
 
-    store.dispatch('auth/login', { username, password }).then(
-        () => {
+    store.dispatch('auth/login', { userName: username.value, password: password.value }).then(
+        (res) => {
+            //request done
             loading.value = false;
-            router.push({
-                name: 'dashboard'
-            });
+
+            if (res?.success) {
+                router.push({
+                    name: 'dashboard'
+                });
+            } else {
+                let loginResMessage = 'Đăng nhập thất bại';
+                switch (res?.responseCode) {
+                    case 'WRONG_USERNAME_OR_PASSWORD':
+                        loginResMessage = 'Sai tên đăng nhập hoặc mật khẩu';
+                        break;
+                    case 'NOT_EXIST_USER':
+                        loginResMessage = 'Không tồn tại người dùng';
+                        break;
+                }
+                message.value = loginResMessage;
+            }
         },
         (error) => {
             console.log(error);
@@ -60,7 +76,7 @@ function signIn() {
                         <label for="password1" class="block text-900 font-medium text-xl mb-2">{{ $t('resource_authen.password') }}</label>
                         <Password id="password1" v-model="password" placeholder="Password" :toggleMask="true" class="w-full mb-3" inputClass="w-full" :inputStyle="{ padding: '1rem' }"></Password>
 
-                        <span v-if="message">{{ message }}</span>
+                        <div class="p-error mb-3" v-if="message">{{ message }}</div>
 
                         <div class="flex align-items-center justify-content-between mb-5 gap-5">
                             <div class="flex align-items-center">

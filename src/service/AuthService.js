@@ -4,7 +4,7 @@ class AuthService {
     baseUrl = '';
 
     initAPIUrl() {
-        this.baseUrl = window.config['API_URL'] + '/auth';
+        this.baseUrl = window.config['AUTH_API'] + '/Auth';
     }
 
     getAPIUrl() {
@@ -17,7 +17,7 @@ class AuthService {
 
     login(payload) {
         let req = {
-            url: this.getAPIUrl() + 'login',
+            url: this.getAPIUrl() + '/login',
             data: payload
         };
         return httpClient.postAsync(req);
@@ -25,7 +25,7 @@ class AuthService {
 
     register(payload) {
         let req = {
-            url: this.getAPIUrl() + 'register',
+            url: this.getAPIUrl() + '/register',
             data: payload
         };
         return httpClient.postAsync(req);
@@ -33,7 +33,7 @@ class AuthService {
 
     logout(payload) {
         let req = {
-            url: this.getAPIUrl() + 'logout',
+            url: this.getAPIUrl() + '/logout',
             data: payload
         };
         return httpClient.postAsync(req);
