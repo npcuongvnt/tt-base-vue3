@@ -2,12 +2,14 @@
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { useLayout } from '@/layout/composables/layout';
 import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 
 const { layoutConfig, onMenuToggle } = useLayout();
 
 const outsideClickListener = ref(null);
 const topbarMenuActive = ref(false);
 const router = useRouter();
+const store = useStore();
 
 onMounted(() => {
     bindOutsideClickListener();
@@ -21,13 +23,29 @@ const logoUrl = computed(() => {
     return `layout/images/${layoutConfig.darkTheme.value ? 'logo-white' : 'logo-dark'}.svg`;
 });
 
-const onTopBarMenuButton = () => {
+const onTopBarMenuButton = (commandName) => {
     topbarMenuActive.value = !topbarMenuActive.value;
+
+    switch (commandName) {
+        case 'Profile':
+            router.push({ name: 'profile' });
+            break;
+        case 'Setting':
+            router.push({ name: 'setting' });
+            break;
+        case 'LogOut':
+            store.dispatch('auth/logout').then(
+                () => {
+                    router.push({ name: 'login' });
+                },
+                (error) => {
+                    console.log(error);
+                }
+            );
+            break;
+    }
 };
-const onSettingsClick = () => {
-    topbarMenuActive.value = false;
-    router.push('/documentation');
-};
+
 const topbarMenuClasses = computed(() => {
     return {
         'layout-topbar-menu-mobile-active': topbarMenuActive.value
@@ -76,17 +94,17 @@ const isOutsideClicked = (event) => {
         </button>
 
         <div class="layout-topbar-menu" :class="topbarMenuClasses">
-            <button @click="onTopBarMenuButton()" class="p-link layout-topbar-button">
-                <i class="pi pi-calendar"></i>
-                <span>Calendar</span>
-            </button>
-            <button @click="onTopBarMenuButton()" class="p-link layout-topbar-button">
+            <button @click="onTopBarMenuButton('Profile')" class="p-link layout-topbar-button">
                 <i class="pi pi-user"></i>
                 <span>Profile</span>
             </button>
-            <button @click="onSettingsClick()" class="p-link layout-topbar-button">
+            <button @click="onTopBarMenuButton('Setting')" class="p-link layout-topbar-button">
                 <i class="pi pi-cog"></i>
                 <span>Settings</span>
+            </button>
+            <button @click="onTopBarMenuButton('LogOut')" class="p-link layout-topbar-button">
+                <i class="pi pi-sign-out"></i>
+                <span>Logout</span>
             </button>
         </div>
     </div>

@@ -1,8 +1,9 @@
-import { createRouter, createWebHashHistory } from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 import AppLayout from '@/layout/AppLayout.vue';
+import store from '@/store';
 
 const router = createRouter({
-    history: createWebHashHistory(),
+    history: createWebHistory(),
     routes: [
         {
             path: '/',
@@ -12,6 +13,16 @@ const router = createRouter({
                     path: '/',
                     name: 'dashboard',
                     component: () => import('@/views/Dashboard.vue')
+                },
+                {
+                    path: '/profile',
+                    name: 'profile',
+                    component: () => import('@/views/pages/Profile.vue')
+                },
+                {
+                    path: '/setting',
+                    name: 'setting',
+                    component: () => import('@/views/pages/Setting.vue')
                 },
                 {
                     path: '/uikit/formlayout',
@@ -147,55 +158,54 @@ const router = createRouter({
             path: '/landing',
             name: 'landing',
             component: () => import('@/views/pages/Landing.vue'),
-            meta: () => ({ anonymous: true })
+            meta: { anonymous: true }
         },
         {
             path: '/pages/notfound',
             name: 'notfound',
             component: () => import('@/views/pages/NotFound.vue'),
-            meta: () => ({ anonymous: true })
+            meta: { anonymous: true }
         },
         {
             path: '/auth/login',
             name: 'login',
             component: () => import('@/views/pages/auth/Login.vue'),
-            meta: () => ({ anonymous: true })
+            meta: { anonymous: true }
         },
         {
             path: '/auth/access',
             name: 'accessDenied',
             component: () => import('@/views/pages/auth/Access.vue'),
-            meta: () => ({ anonymous: true })
+            meta: { anonymous: true }
         },
         {
             path: '/auth/error',
             name: 'error',
             component: () => import('@/views/pages/auth/Error.vue'),
-            meta: () => ({ anonymous: true })
+            meta: { anonymous: true }
         }
     ]
 });
 
 router.beforeEach(async (toRouter, from, next) => {
+    //Không yêu cầu đăng nhập
     if (toRouter.meta?.anonymous) {
         next();
         return;
     }
 
-    let isAuthenticate = true;
+    //Yêu cầu đăng nhập
+    let isAuthen = store.state.auth.status.loggedIn;
 
-    //TODO
-    // token hết hạn thì direct về trang đăng nhập
-    if (!isAuthenticate) {
-        next('/auth/login');
+    // Redirect về trang đăng nhập
+    if (!isAuthen) {
+        next({ name: 'login' });
         return;
     }
 
     next();
 });
 
-router.afterEach(() => {
-    console.log('route page done');
-});
+router.afterEach(() => {});
 
 export default router;
