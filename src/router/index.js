@@ -1,9 +1,9 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHashHistory } from 'vue-router';
 import AppLayout from '@/layout/AppLayout.vue';
 import store from '@/store';
 
 const router = createRouter({
-    history: createWebHistory(),
+    history: createWebHashHistory(),
     routes: [
         {
             path: '/',
@@ -24,6 +24,22 @@ const router = createRouter({
                     name: 'setting',
                     component: () => import('@/views/pages/Setting.vue')
                 },
+
+                {
+                    path: '/example',
+                    component: () => import('@/views/pages/Example/Example.vue'),
+                    children: [
+                        {
+                            path: '',
+                            component: () => import('@/views/pages/Example/ExampleList.vue')
+                        },
+                        {
+                            path: ':id',
+                            component: () => import('@/views/pages/Example/ExampleDetail.vue')
+                        }
+                    ]
+                },
+
                 {
                     path: '/uikit/formlayout',
                     name: 'formlayout',
@@ -161,25 +177,25 @@ const router = createRouter({
             meta: { anonymous: true }
         },
         {
-            path: '/pages/notfound',
+            path: '/notfound',
             name: 'notfound',
             component: () => import('@/views/pages/NotFound.vue'),
             meta: { anonymous: true }
         },
         {
-            path: '/auth/login',
+            path: '/login',
             name: 'login',
             component: () => import('@/views/pages/auth/Login.vue'),
             meta: { anonymous: true }
         },
         {
-            path: '/auth/access',
+            path: '/access',
             name: 'accessDenied',
             component: () => import('@/views/pages/auth/Access.vue'),
             meta: { anonymous: true }
         },
         {
-            path: '/auth/error',
+            path: '/error',
             name: 'error',
             component: () => import('@/views/pages/auth/Error.vue'),
             meta: { anonymous: true }
@@ -196,6 +212,10 @@ router.beforeEach(async (toRouter, from, next) => {
 
     //Yêu cầu đăng nhập
     let isAuthen = store.state.auth.status.loggedIn;
+
+    if (import.meta.env.DEV) {
+        isAuthen = true;
+    }
 
     // Redirect về trang đăng nhập
     if (!isAuthen) {

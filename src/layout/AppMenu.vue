@@ -9,7 +9,8 @@ const model = ref([
         items: [
             { label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' },
             { label: 'Profile', icon: 'pi pi-fw pi-user', to: '/Profile' },
-            { label: 'Setting', icon: 'pi pi-fw pi-cog', to: '/Setting' }
+            { label: 'Setting', icon: 'pi pi-fw pi-cog', to: '/Setting' },
+            { label: 'Example', icon: 'pi pi-fw pi-money-bill', to: '/Example' }
         ]
     },
     {
@@ -64,24 +65,24 @@ const model = ref([
                     {
                         label: 'Login',
                         icon: 'pi pi-fw pi-sign-in',
-                        to: '/auth/login'
+                        to: '/login'
                     },
                     {
                         label: 'Error',
                         icon: 'pi pi-fw pi-times-circle',
-                        to: '/auth/error'
+                        to: '/error'
                     },
                     {
                         label: 'Access Denied',
                         icon: 'pi pi-fw pi-lock',
-                        to: '/auth/access'
+                        to: '/access'
                     }
                 ]
             },
             {
-                label: 'Crud',
-                icon: 'pi pi-fw pi-pencil',
-                to: '/pages/crud'
+                label: 'Not Found',
+                icon: 'pi pi-fw pi-exclamation-circle',
+                to: '/notfound'
             },
             {
                 label: 'Timeline',
@@ -89,14 +90,14 @@ const model = ref([
                 to: '/pages/timeline'
             },
             {
-                label: 'Not Found',
-                icon: 'pi pi-fw pi-exclamation-circle',
-                to: '/pages/notfound'
-            },
-            {
                 label: 'Empty',
                 icon: 'pi pi-fw pi-circle-off',
                 to: '/pages/empty'
+            },
+            {
+                label: 'Crud',
+                icon: 'pi pi-fw pi-pencil',
+                to: '/pages/crud'
             }
         ]
     },

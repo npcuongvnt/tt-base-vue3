@@ -109,6 +109,8 @@ import '@/assets/styles.scss';
 
 import vi from '@/i18n/vi.json';
 
+import vue3GoogleLogin from 'vue3-google-login';
+
 const app = createApp(App);
 
 app.use(router);
@@ -227,6 +229,11 @@ fetch(import.meta.env.BASE_URL + 'config.json')
         window.config = config;
         // or use [Vue Global Config][1]
         app.config.globalProperties.config = config;
+
+        app.use(vue3GoogleLogin, {
+            clientId: config.Google.client_id
+        });
+
         // FINALLY, mount the app
         app.mount('#app');
     });
