@@ -10,7 +10,7 @@ const model = ref([
             { label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' },
             { label: 'Profile', icon: 'pi pi-fw pi-user', to: '/Profile' },
             { label: 'Setting', icon: 'pi pi-fw pi-cog', to: '/Setting' },
-            { label: 'Example', icon: 'pi pi-fw pi-money-bill', to: '/Example' }
+            { label: 'Example', icon: 'pi pi-fw pi-money-bill', to: '/examples' }
         ]
     },
     {

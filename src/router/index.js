@@ -24,22 +24,16 @@ const router = createRouter({
                     name: 'setting',
                     component: () => import('@/views/pages/Setting.vue')
                 },
-
                 {
-                    path: '/example',
-                    component: () => import('@/views/pages/Example/Example.vue'),
-                    children: [
-                        {
-                            path: '',
-                            component: () => import('@/views/pages/Example/ExampleList.vue')
-                        },
-                        {
-                            path: ':id',
-                            component: () => import('@/views/pages/Example/ExampleDetail.vue')
-                        }
-                    ]
+                    path: '/examples',
+                    name: 'examples',
+                    component: () => import('@/views/pages/Example/ExampleList.vue')
                 },
-
+                {
+                    path: '/examples/:id',
+                    name: 'example',
+                    component: () => import('@/views/pages/Example/Example.vue')
+                },
                 {
                     path: '/uikit/formlayout',
                     name: 'formlayout',
