@@ -17,7 +17,16 @@ const Action = {
     DELETE: 0
 };
 
+/**
+ * Loại load dữ liệu danh sách
+ */
+const PagingDataType = {
+    Data: 0,
+    Summary: 1
+};
+
 module.exports = {
     EditMode,
-    Action
+    Action,
+    PagingDataType
 };

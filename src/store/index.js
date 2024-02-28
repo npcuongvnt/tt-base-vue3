@@ -4,6 +4,7 @@ import context from './modules/context';
 import user from './modules/user';
 import role from './modules/role';
 import product from './modules/product';
+import example from './modules/example';
 
 const debug = import.meta.env.NODE_ENV !== 'production';
 
@@ -13,7 +14,8 @@ export default createStore({
         context,
         user,
         role,
-        product
+        product,
+        example
     },
     strict: debug,
     plugins: debug ? [createLogger()] : []

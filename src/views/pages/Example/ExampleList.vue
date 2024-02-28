@@ -1,26 +1,28 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
+import { useStore } from 'vuex';
 import { usePagingParam } from '@/composables/usePagingParam';
-import CustomerService from '@/service/CustomerService';
+import { PagingDataType } from '@/common/enum';
+import { FilterMatchMode } from 'primevue/api';
 
-const customerService = new CustomerService();
+const module = 'example';
+const store = useStore();
 const router = useRouter();
 const route = useRoute();
 const { fe2be } = usePagingParam();
 
 const dt = ref();
 const loading = ref(false);
-const totalRecords = ref(0);
 const listRecords = ref();
+const totalRecords = ref(0);
 const selectedRecords = ref();
-const selectAll = ref(false);
 const filters = ref({
-    name: { value: '', matchMode: 'contains' },
-    'country.name': { value: '', matchMode: 'contains' },
-    company: { value: '', matchMode: 'contains' },
-    'representative.name': { value: '', matchMode: 'contains' }
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    example_name: { value: '', matchMode: FilterMatchMode.CONTAINS },
+    status: { value: null, matchMode: FilterMatchMode.EQUALS },
 });
+
 const pagingParams = ref({
     first: 0,
     rows: 10,
@@ -29,8 +31,28 @@ const pagingParams = ref({
     filters: filters.value
 });
 
+const statuses = ref(['unqualified', 'qualified', 'new', 'negotiation', 'renewal', 'proposal']);
+
+const getSeverity = (status) => {
+    switch (status) {
+        case 'unqualified':
+            return 'danger';
+
+        case 'qualified':
+            return 'success';
+
+        case 'new':
+            return 'info';
+
+        case 'negotiation':
+            return 'warning';
+
+        case 'renewal':
+            return null;
+    }
+}
+
 onMounted(() => {
-    loading.value = true;
     loadPagingData();
 });
 
@@ -38,49 +60,59 @@ const loadPagingData = () => {
     loading.value = true;
     pagingParams.value = { ...pagingParams.value };
 
-    console.log(pagingParams.value);
-
     let beParam = fe2be(pagingParams.value);
 
-    setTimeout(() => {
-        customerService.getCustomersLarge({ lazyEvent: JSON.stringify(beParam) }).then((data) => {
-            listRecords.value = data;
-            totalRecords.value = data.length;
-            loading.value = false;
-        });
-    }, Math.random() * 1000 + 250);
+    //load danh sách
+    loadData(beParam);
+
+    //load tổng số
+    loadDataSummary(beParam);
 };
+
+const loadData = (payload) => {
+    if (payload) {
+        payload['type'] = PagingDataType.Data
+    }
+    store.dispatch(`${module}/paging`, payload).then(
+        (res) => {
+            listRecords.value = res.PageData;
+            loading.value = false;
+        },
+        (error) => {
+        }
+    );
+};
+
+const loadDataSummary = (payload) => {
+    if (payload) {
+        payload['type'] = PagingDataType.Summary
+    }
+
+    store.dispatch(`${module}/paging`, payload).then(
+        (res) => {
+            totalRecords.value = res.Total;
+        },
+        (error) => {
+        }
+    );
+
+};
+
 const onPage = (event) => {
     pagingParams.value = event;
     loadPagingData(event);
 };
+
 const onSort = (event) => {
     pagingParams.value = event;
     loadPagingData(event);
 };
+
 const onFilter = (event) => {
     pagingParams.value.filters = filters.value;
     loadPagingData(event);
 };
-const onSelectAllChange = (event) => {
-    selectAll.value = event.checked;
 
-    if (selectAll.value) {
-        customerService.getCustomers().then((data) => {
-            selectAll.value = true;
-            selectedRecords.value = data.customers;
-        });
-    } else {
-        selectAll.value = false;
-        selectedRecords.value = [];
-    }
-};
-const onRowSelect = () => {
-    selectAll.value = selectedRecords.value.length === totalRecords.value;
-};
-const onRowUnselect = () => {
-    selectAll.value = false;
-};
 
 const openNew = () => {
     let id = 'id';
@@ -121,45 +153,50 @@ const openNew = () => {
                 @sort="onSort($event)"
                 @filter="onFilter($event)"
                 filterDisplay="row"
-                :globalFilterFields="['name', 'country.name', 'company', 'representative.name']"
+                :globalFilterFields="['example_name', 'country.name', 'company', 'representative.name']"
                 v-model:selection="selectedRecords"
-                :selectAll="selectAll"
-                @select-all-change="onSelectAllChange"
-                @row-select="onRowSelect"
-                @row-unselect="onRowUnselect"
                 tableStyle="min-width: 75rem"
             >
+                <template #header>
+                    <div class="flex justify-content-end">
+                        <IconField iconPosition="left">
+                            <InputIcon>
+                                <i class="pi pi-search" />
+                            </InputIcon>
+                            <InputText v-model="filters['global'].value" placeholder="Tìm kiếm" />
+                        </IconField>
+                    </div>
+                </template>
+                <template #empty> Không có dữ liệu. </template>
+                <template #loading> Đang lấy dữ liệu. Vui lòng chờ. </template>
+
                 <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
-                <Column field="name" header="Name" filterMatchMode="startsWith" sortable>
+
+                <Column field="example_name" header="Tên" filterMatchMode="startsWith" sortable>
                     <template #filter="{ filterModel, filterCallback }">
-                        <InputText type="text" v-model="filterModel.value" @keydown.enter="filterCallback()" class="p-column-filter" placeholder="Nhập để tìm kiếm" />
+                        <InputText 
+                            type="text" 
+                            v-model="filterModel.value" 
+                            @keydown.enter="filterCallback()" 
+                            class="p-column-filter" 
+                            placeholder="Nhập để tìm kiếm" />
                     </template>
                 </Column>
-                <Column field="country.name" header="Country" filterField="country.name" filterMatchMode="contains" sortable>
+                
+                <Column field="status" header="Trạng thái" :showFilterMenu="false" :filterMenuStyle="{ width: '14rem' }" style="min-width: 12rem">
                     <template #body="{ data }">
-                        <div class="flex align-items-center gap-2">
-                            <img alt="flag" src="https://primefaces.org/cdn/primevue/images/flag/flag_placeholder.png" :class="`flag flag-${data.country.code}`" style="width: 24px" />
-                            <span>{{ data.country.name }}</span>
-                        </div>
+                        <Tag :value="data.status" :severity="getSeverity(data.status)" />
                     </template>
                     <template #filter="{ filterModel, filterCallback }">
-                        <InputText type="text" v-model="filterModel.value" @keydown.enter="filterCallback()" class="p-column-filter" placeholder="Nhập để tìm kiếm" />
-                    </template>
-                </Column>
-                <Column field="company" header="Company" filterMatchMode="contains" sortable>
-                    <template #filter="{ filterModel, filterCallback }">
-                        <InputText type="text" v-model="filterModel.value" @keydown.enter="filterCallback()" class="p-column-filter" placeholder="Nhập để tìm kiếm" />
-                    </template>
-                </Column>
-                <Column field="representative.name" header="Representative" filterField="representative.name" sortable>
-                    <template #body="{ data }">
-                        <div class="flex align-items-center gap-2">
-                            <img :alt="data.representative.name" :src="`https://primefaces.org/cdn/primevue/images/avatar/${data.representative.image}`" style="width: 32px" />
-                            <span>{{ data.representative.name }}</span>
-                        </div>
-                    </template>
-                    <template #filter="{ filterModel, filterCallback }">
-                        <InputText type="text" v-model="filterModel.value" @keydown.enter="filterCallback()" class="p-column-filter" placeholder="Nhập để tìm kiếm" />
+                        <Dropdown 
+                            v-model="filterModel.value" 
+                            @change="filterCallback()" 
+                            :options="statuses" 
+                            placeholder="Chọn một" 
+                            class="p-column-filter" 
+                            style="min-width: 12rem" 
+                            :showClear="true">
+                        </Dropdown>
                     </template>
                 </Column>
             </DataTable>
