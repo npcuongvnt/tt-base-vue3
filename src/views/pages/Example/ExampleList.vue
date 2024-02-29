@@ -20,7 +20,10 @@ const selectedRecords = ref();
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     example_name: { value: '', matchMode: FilterMatchMode.CONTAINS },
+    date: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
+    balance: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
     status: { value: null, matchMode: FilterMatchMode.EQUALS },
+    is_bool: { value: null, matchMode: FilterMatchMode.EQUALS },
 });
 
 const pagingParams = ref({
@@ -51,6 +54,18 @@ const getSeverity = (status) => {
             return null;
     }
 }
+
+const formatDate = (value) => {
+    return value.toLocaleDateString('en-US', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+    });
+};
+
+const formatCurrency = (value) => {
+    return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+};
 
 onMounted(() => {
     loadPagingData();
@@ -167,12 +182,18 @@ const openNew = () => {
                         </IconField>
                     </div>
                 </template>
+
                 <template #empty> Không có dữ liệu. </template>
+
                 <template #loading> Đang lấy dữ liệu. Vui lòng chờ. </template>
 
                 <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
 
-                <Column field="example_name" header="Tên" filterMatchMode="startsWith" sortable>
+                <Column 
+                    field="example_name" 
+                    header="Tên" 
+                    filterMatchMode="startsWith" 
+                    sortable>
                     <template #filter="{ filterModel, filterCallback }">
                         <InputText 
                             type="text" 
@@ -182,8 +203,32 @@ const openNew = () => {
                             placeholder="Nhập để tìm kiếm" />
                     </template>
                 </Column>
+
+                <Column field="date" header="Ngày" sortable filterField="date" dataType="date" style="min-width: 10rem">
+                    <template #body="{ data }">
+                        {{ formatDate(data.date) }}
+                    </template>
+                    <template #filter="{ filterModel }">
+                        <Calendar v-model="filterModel.value" dateFormat="mm/dd/yy" placeholder="mm/dd/yyyy" mask="99/99/9999" />
+                    </template>
+                </Column>
+
+                <Column field="balance" header="Tiền" sortable filterField="balance" dataType="numeric" style="min-width: 10rem">
+                    <template #body="{ data }">
+                        {{ formatCurrency(data.balance) }}
+                    </template>
+                    <template #filter="{ filterModel }">
+                        <InputNumber v-model="filterModel.value" mode="currency" currency="USD" locale="en-US" />
+                    </template>
+                </Column>
                 
-                <Column field="status" header="Trạng thái" :showFilterMenu="false" :filterMenuStyle="{ width: '14rem' }" style="min-width: 12rem">
+                <Column 
+                    field="status" 
+                    header="Trạng thái" 
+                    :showFilterMenu="false" 
+                    :filterMenuStyle="{ width: '14rem' }" 
+                    style="min-width: 12rem"
+                >
                     <template #body="{ data }">
                         <Tag :value="data.status" :severity="getSeverity(data.status)" />
                     </template>
@@ -199,6 +244,16 @@ const openNew = () => {
                         </Dropdown>
                     </template>
                 </Column>
+
+                <Column field="is_bool" header="Có không" dataType="boolean" style="min-width: 6rem">
+                    <template #body="{ data }">
+                        <i class="pi" :class="{ 'pi-check-circle text-green-500': data.is_bool, 'pi-times-circle text-red-400': !data.is_bool }"></i>
+                    </template>
+                    <template #filter="{ filterModel, filterCallback }">
+                        <TriStateCheckbox v-model="filterModel.value" @change="filterCallback()" />
+                    </template>
+                </Column>
+
             </DataTable>
         </div>
     </div>
