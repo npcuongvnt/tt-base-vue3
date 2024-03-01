@@ -1,7 +1,7 @@
 /**
  * Những mode hiển thị của trang detail
  */
-const EditMode = {
+const ViewMode = {
     VIEW: 0,
     ADD: 1,
     EDIT: 2,
@@ -9,24 +9,45 @@ const EditMode = {
 };
 
 /**
- * Hành động trên trang detail
+ * Các nút hành động cơ bản trên chương trình
  */
-const Action = {
-    INSERT: 1,
-    UPDATE: 2,
-    DELETE: 0
+const CommandName = {
+    REFRESH: 'REFRESH',
+    VIEW: 'VIEW',
+    ADD: 'ADD',
+    EDIT: 'EDIT',
+    DELETE: 'DELETE',
+    SAVE: 'SAVE',
+    YES: 'YES',
+    NO: 'NO',
+    CANCEL: 'CANCEL',
+    BACK: 'BACK',
+};
+
+/**
+ * Trạng thái của bản ghi đẩy lên server
+ */
+const ModelState = {
+    None: 0,
+    Insert: 1,
+    Update: 2,
+    Delete: 3,
+    Empty: 4,
+    Duplicate: 5,
+    OverWrite: 6
 };
 
 /**
  * Loại load dữ liệu danh sách
  */
 const PagingDataType = {
-    Data: 0,
-    Summary: 1
+    DATA: 0,
+    SUMMARY: 1
 };
 
 module.exports = {
-    EditMode,
-    Action,
+    ViewMode,
+    CommandName,
+    ModelState,
     PagingDataType
 };

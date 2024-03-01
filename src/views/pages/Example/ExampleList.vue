@@ -86,7 +86,7 @@ const loadPagingData = () => {
 
 const loadData = (payload) => {
     if (payload) {
-        payload['type'] = PagingDataType.Data
+        payload['type'] = PagingDataType.DATA
     }
     store.dispatch(`${module}/paging`, payload).then(
         (res) => {
@@ -100,7 +100,7 @@ const loadData = (payload) => {
 
 const loadDataSummary = (payload) => {
     if (payload) {
-        payload['type'] = PagingDataType.Summary
+        payload['type'] = PagingDataType.SUMMARY
     }
 
     store.dispatch(`${module}/paging`, payload).then(
@@ -110,7 +110,6 @@ const loadDataSummary = (payload) => {
         (error) => {
         }
     );
-
 };
 
 const onPage = (event) => {
@@ -127,7 +126,6 @@ const onFilter = (event) => {
     pagingParams.value.filters = filters.value;
     loadPagingData(event);
 };
-
 
 const openNew = () => {
     let id = 'id';
