@@ -3,8 +3,8 @@ import App from './App.vue';
 import store from './store';
 import router from './router';
 import i18n from './i18n';
-
 import PrimeVue from 'primevue/config';
+
 import AutoComplete from 'primevue/autocomplete';
 import Accordion from 'primevue/accordion';
 import AccordionTab from 'primevue/accordiontab';
@@ -46,6 +46,8 @@ import Galleria from 'primevue/galleria';
 import Image from 'primevue/image';
 import InlineMessage from 'primevue/inlinemessage';
 import Inplace from 'primevue/inplace';
+import IconField from 'primevue/iconfield';
+import InputIcon from 'primevue/inputicon';
 import InputSwitch from 'primevue/inputswitch';
 import InputText from 'primevue/inputtext';
 import InputMask from 'primevue/inputmask';
@@ -103,11 +105,10 @@ import TriStateCheckbox from 'primevue/tristatecheckbox';
 import VirtualScroller from 'primevue/virtualscroller';
 
 import BlockViewer from '@/components/BlockViewer.vue';
-import LanguageSwitcher from '@/components/LanguageSwitcher.vue';
+import LocaleSwitcher from '@/components/LocaleSwitcher.vue';
 
+import 'primevue/resources/themes/aura-light-green/theme.css';
 import '@/assets/styles.scss';
-
-import vi from '@/i18n/vi.json';
 
 import vue3GoogleLogin from 'vue3-google-login';
 
@@ -116,10 +117,8 @@ const app = createApp(App);
 app.use(router);
 app.use(store);
 app.use(i18n);
-app.use(PrimeVue, {
-    ripple: true,
-    locale: vi.resource_control
-});
+app.use(PrimeVue);
+
 app.use(ToastService);
 app.use(DialogService);
 app.use(ConfirmationService);
@@ -130,7 +129,7 @@ app.directive('ripple', Ripple);
 app.directive('styleclass', StyleClass);
 
 app.component('BlockViewer', BlockViewer);
-app.component('LanguageSwitcher', LanguageSwitcher);
+app.component('LocaleSwitcher', LocaleSwitcher);
 
 app.component('Accordion', Accordion);
 app.component('AccordionTab', AccordionTab);
@@ -167,6 +166,8 @@ app.component('DynamicDialog', DynamicDialog);
 app.component('Fieldset', Fieldset);
 app.component('FileUpload', FileUpload);
 app.component('Galleria', Galleria);
+app.component('IconField', IconField);
+app.component('InputIcon', InputIcon);
 app.component('Image', Image);
 app.component('InlineMessage', InlineMessage);
 app.component('Inplace', Inplace);

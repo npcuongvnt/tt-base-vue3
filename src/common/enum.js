@@ -21,7 +21,7 @@ const CommandName = {
     YES: 'YES',
     NO: 'NO',
     CANCEL: 'CANCEL',
-    BACK: 'BACK',
+    BACK: 'BACK'
 };
 
 /**
@@ -45,9 +45,4 @@ const PagingDataType = {
     SUMMARY: 1
 };
 
-module.exports = {
-    ViewMode,
-    CommandName,
-    ModelState,
-    PagingDataType
-};
+export { ViewMode, CommandName, ModelState, PagingDataType };

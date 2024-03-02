@@ -1,3 +1,5 @@
+import { FilterMatchMode } from 'primevue/api';
+
 /**
  * Composable paging Param
  * @returns
@@ -11,7 +13,6 @@ export function usePagingParam() {
      */
     const fe2be = (fePagingParams, type) => {
         let bePagingParams = {
-            ...fePagingParams,
             columns: fePagingParams.columns || '*',
             filter: fe2beFilter(fePagingParams.filters),
             type: type || 0,
@@ -73,20 +74,20 @@ export function usePagingParam() {
     };
 
     const matchModes = [
-        { op: 'Contains', fe: '', be: '*' },
-        { op: 'Notcontains', fe: '', be: '!*' },
-        { op: 'StartsWith', fe: '', be: '*.' },
-        { op: 'EndsWith', fe: '', be: '.*' },
+        { op: 'Contains', fe: FilterMatchMode.CONTAINS, be: '*' },
+        { op: 'Notcontains', fe: FilterMatchMode.NOT_CONTAINS, be: '!*' },
+        { op: 'StartsWith', fe: FilterMatchMode.STARTS_WITH, be: '*.' },
+        { op: 'EndsWith', fe: FilterMatchMode.ENDS_WITH, be: '.*' },
         { op: 'Null', fe: '', be: 'NULL' },
         { op: 'NotNull', fe: '', be: 'NOT NULL' },
-        { op: 'Equals', fe: '', be: '=' },
-        { op: 'NotEquals', fe: '', be: '!=' },
-        { op: 'GreaterThan', fe: '', be: '>' },
-        { op: 'GreaterThanEquals', fe: '', be: '>=' },
-        { op: 'LessThan', fe: '', be: '<' },
-        { op: 'LessThanEquals', fe: '', be: '<=' },
-        { op: 'Between', fe: '', be: '[]' },
-        { op: 'In', fe: '', be: 'IN' },
+        { op: 'Equals', fe: FilterMatchMode.EQUALS, be: '=' },
+        { op: 'NotEquals', fe: FilterMatchMode.NOT_EQUALS, be: '!=' },
+        { op: 'GreaterThan', fe: FilterMatchMode.GREATER_THAN, be: '>' },
+        { op: 'GreaterThanEquals', fe: FilterMatchMode.GREATER_THAN_OR_EQUAL_TO, be: '>=' },
+        { op: 'LessThan', fe: FilterMatchMode.LESS_THAN, be: '<' },
+        { op: 'LessThanEquals', fe: FilterMatchMode.LESS_THAN_OR_EQUAL_TO, be: '<=' },
+        { op: 'Between', fe: FilterMatchMode.BETWEEN, be: '[]' },
+        { op: 'In', fe: FilterMatchMode.IN, be: 'IN' },
         { op: 'NotIn', fe: '', be: 'NOT IN' }
     ];
 
