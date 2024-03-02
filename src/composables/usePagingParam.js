@@ -18,7 +18,9 @@ export function usePagingParam() {
             type: type || 0,
             skip: fePagingParams.first,
             take: fePagingParams.rows,
-            sort: fe2beSort(fePagingParams.sortField, fePagingParams.sortOrder)
+            sort: fe2beSort(fePagingParams.sortField, fePagingParams.sortOrder),
+            emptyFilter: '',
+            selectedItem: ''
         };
 
         return bePagingParams;
@@ -34,13 +36,18 @@ export function usePagingParam() {
 
         for (const prop in feFilters) {
             if (Object.prototype.hasOwnProperty.call(feFilters, prop)) {
-                let itemFilter = {
-                    field: prop,
-                    value: feFilters[prop].value,
-                    operator: fe2beMatchMode(feFilters[prop].matchMode)
-                };
 
-                filters.push(itemFilter);
+                //Néu có filter thì mới truyền where lên.
+                //Cần xem lại chỗ này xem như nào thì hợp lý
+                if (feFilters[prop].value != null) {
+                    let itemFilter = {
+                        field: prop,
+                        value: feFilters[prop].value,
+                        operator: fe2beMatchMode(feFilters[prop].matchMode)
+                    };
+
+                    filters.push(itemFilter);
+                }
             }
         }
 
@@ -55,7 +62,7 @@ export function usePagingParam() {
      */
     const fe2beSort = (feSortField, feSortOrder) => {
         if (feSortField == null) {
-            return null;
+            return '';
         }
 
         return `${feSortField} ${feSortOrder == -1 ? 'DESC' : 'ASC'}`;
@@ -78,8 +85,8 @@ export function usePagingParam() {
         { op: 'Notcontains', fe: FilterMatchMode.NOT_CONTAINS, be: '!*' },
         { op: 'StartsWith', fe: FilterMatchMode.STARTS_WITH, be: '*.' },
         { op: 'EndsWith', fe: FilterMatchMode.ENDS_WITH, be: '.*' },
-        { op: 'Null', fe: '', be: 'NULL' },
-        { op: 'NotNull', fe: '', be: 'NOT NULL' },
+        { op: 'Null', fe: 'null', be: 'NULL' },
+        { op: 'NotNull', fe: 'notNull', be: 'NOT NULL' },
         { op: 'Equals', fe: FilterMatchMode.EQUALS, be: '=' },
         { op: 'NotEquals', fe: FilterMatchMode.NOT_EQUALS, be: '!=' },
         { op: 'GreaterThan', fe: FilterMatchMode.GREATER_THAN, be: '>' },
@@ -88,7 +95,7 @@ export function usePagingParam() {
         { op: 'LessThanEquals', fe: FilterMatchMode.LESS_THAN_OR_EQUAL_TO, be: '<=' },
         { op: 'Between', fe: FilterMatchMode.BETWEEN, be: '[]' },
         { op: 'In', fe: FilterMatchMode.IN, be: 'IN' },
-        { op: 'NotIn', fe: '', be: 'NOT IN' }
+        { op: 'NotIn', fe: 'notIn', be: 'NOT IN' }
     ];
 
     return {

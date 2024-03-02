@@ -1,16 +1,18 @@
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
 import { useStore } from 'vuex';
+import { useRouter, useRoute } from 'vue-router';
 import { usePagingParam } from '@/composables/usePagingParam';
 import { PagingDataType } from '@/common/enum';
 import { FilterOperator, FilterMatchMode } from 'primevue/api';
+import { useFormat } from '@/composables/useFormat';
 
 const module = 'example';
 const store = useStore();
 const router = useRouter();
 const route = useRoute();
 const { fe2be } = usePagingParam();
+const { formatDate, formatCurrency } = useFormat();
 
 const dt = ref();
 const loading = ref(false);
@@ -18,10 +20,9 @@ const listRecords = ref();
 const totalRecords = ref(0);
 const selectedRecords = ref();
 const filters = ref({
-    global_search: { value: null, matchMode: FilterMatchMode.CONTAINS },
     example_name: { value: '', matchMode: FilterMatchMode.CONTAINS },
-    date: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
-    balance: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
+    example_date: { value: null, matchMode: FilterMatchMode.DATE_IS },
+    example_amount: { value: null, matchMode: FilterMatchMode.EQUALS },
     status: { value: null, matchMode: FilterMatchMode.EQUALS },
     is_bool: { value: null, matchMode: FilterMatchMode.EQUALS }
 });
@@ -40,31 +41,15 @@ const getSeverity = (status) => {
     switch (status) {
         case 'unqualified':
             return 'danger';
-
         case 'qualified':
             return 'success';
-
         case 'new':
             return 'info';
-
         case 'negotiation':
             return 'warning';
-
         case 'renewal':
             return null;
     }
-};
-
-const formatDate = (value) => {
-    return value.toLocaleDateString('en-US', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric'
-    });
-};
-
-const formatCurrency = (value) => {
-    return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 };
 
 onMounted(() => {
@@ -76,6 +61,8 @@ const loadPagingData = () => {
     pagingParams.value = { ...pagingParams.value };
 
     let beParam = fe2be(pagingParams.value);
+
+    beParam.columns = 'example_name,example_date,example_amount,status,is_bool';
 
     //load danh sách
     loadData(beParam);
@@ -90,7 +77,7 @@ const loadData = (payload) => {
     }
     store.dispatch(`${module}/paging`, payload).then((res) => {
         if (res) {
-            listRecords.value = res.PageData;
+            listRecords.value = res.pageData;
         }
         loading.value = false;
     });
@@ -103,7 +90,7 @@ const loadDataSummary = (payload) => {
 
     store.dispatch(`${module}/paging`, payload).then((res) => {
         if (res) {
-            totalRecords.value = res.Total;
+            totalRecords.value = res.total;
         }
     });
 };
@@ -123,7 +110,7 @@ const onFilter = (event) => {
     loadPagingData(event);
 };
 
-const openNew = () => {
+const add = () => {
     let id = 'id';
     let master = this;
     router.push({
@@ -142,7 +129,7 @@ const openNew = () => {
             <Toast />
             <Toolbar class="">
                 <template v-slot:start>
-                    <Button label="New" icon="pi pi-plus" class="p-button-success mr-2" @click="openNew" />
+                    <Button :label="$t('commandname.ADD')" icon="pi pi-plus" class="p-button-success mr-2" @click="add" />
                 </template>
             </Toolbar>
 
@@ -170,33 +157,33 @@ const openNew = () => {
                     <div class="flex justify-content-end">
                         <IconField iconPosition="left">
                             <InputIcon class="pi pi-search"> </InputIcon>
-                            <InputText v-model="filters['global_search'].value" placeholder="Tìm kiếm" />
+                            <InputText v-model="filters['example_name'].value" :placeholder="$t('search')" />
                         </IconField>
                     </div>
                 </template>
 
-                <template #empty> Không có dữ liệu. </template>
+                <template #empty> {{ $t('empty') }} </template>
 
                 <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
 
                 <Column field="example_name" header="Tên" filterMatchMode="startsWith" sortable>
                     <template #filter="{ filterModel, filterCallback }">
-                        <InputText type="text" v-model="filterModel.value" @keydown.enter="filterCallback()" class="p-column-filter" placeholder="Nhập để tìm kiếm" />
+                        <InputText type="text" v-model="filterModel.value" @keydown.enter="filterCallback()" class="p-column-filter" />
                     </template>
                 </Column>
 
-                <Column field="date" header="Ngày" sortable filterField="date" dataType="date" style="min-width: 10rem">
+                <Column field="example_date" header="Ngày" sortable filterField="example_date" dataType="date" style="min-width: 10rem">
                     <template #body="{ data }">
-                        {{ formatDate(data.date) }}
+                        {{ formatDate(data.example_date) }}
                     </template>
                     <template #filter="{ filterModel }">
                         <Calendar v-model="filterModel.value" dateFormat="mm/dd/yy" placeholder="mm/dd/yyyy" mask="99/99/9999" />
                     </template>
                 </Column>
 
-                <Column field="balance" header="Tiền" sortable filterField="balance" dataType="numeric" style="min-width: 10rem">
+                <Column field="example_amount" header="Tiền" sortable filterField="example_amount" dataType="numeric" style="min-width: 10rem">
                     <template #body="{ data }">
-                        {{ formatCurrency(data.balance) }}
+                        {{ formatCurrency(data.example_amount) }}
                     </template>
                     <template #filter="{ filterModel }">
                         <InputNumber v-model="filterModel.value" mode="currency" currency="USD" locale="en-US" />
@@ -208,7 +195,7 @@ const openNew = () => {
                         <Tag :value="data.status" :severity="getSeverity(data.status)" />
                     </template>
                     <template #filter="{ filterModel, filterCallback }">
-                        <Dropdown v-model="filterModel.value" @change="filterCallback()" :options="statuses" placeholder="Chọn một" class="p-column-filter" style="min-width: 12rem" :showClear="true"> </Dropdown>
+                        <Dropdown v-model="filterModel.value" @change="filterCallback()" :options="statuses" class="p-column-filter" style="min-width: 12rem" :showClear="true"> </Dropdown>
                     </template>
                 </Column>
 

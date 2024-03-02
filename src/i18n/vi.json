@@ -1,11 +1,6 @@
 {
-  "title": "App của tao",
-  "description": "Example for PrimeVue and Vue-I18N",
-  "confirm": {
-    "header": "Confirm",
-    "message": "Are you sure you want to proceed?",
-    "label": "Confirm"
-  },
+  "search": "Tìm kiếm",
+  "empty": "Không có dữ liệu",
   "primevue": {
     "startsWith": "Bắt đầu với",
     "contains": "Chứa",
@@ -154,5 +149,17 @@
       "rotateRight": "Rotate Right",
       "rotateLeft": "Rotate Left"
     }
+  },
+  "commandname": {
+        "REFRESH": "Nạp",
+        "VIEW": "Xem",
+        "ADD": "Thêm",
+        "EDIT": "Sửa",
+        "DELETE": "Xóa",
+        "SAVE": "Lưu",
+        "YES": "Có",
+        "NO": "Không",
+        "CANCEL": "Hủy bỏ",
+        "BACK": "Quay lại"
   }
 }
