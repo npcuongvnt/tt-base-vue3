@@ -39,7 +39,7 @@ export function usePagingParam() {
 
                 //Néu có filter thì mới truyền where lên.
                 //Cần xem lại chỗ này xem như nào thì hợp lý
-                if (feFilters[prop].value != null) {
+                if (feFilters[prop].value != null && feFilters[prop].value != '') {
                     let itemFilter = {
                         field: prop,
                         value: feFilters[prop].value,

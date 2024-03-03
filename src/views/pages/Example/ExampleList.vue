@@ -1,16 +1,25 @@
 <script setup>
 import { ref, onMounted } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useStore } from 'vuex';
 import { useRouter, useRoute } from 'vue-router';
 import { usePagingParam } from '@/composables/usePagingParam';
 import { PagingDataType } from '@/common/enum';
-import { FilterOperator, FilterMatchMode } from 'primevue/api';
+import { FilterMatchMode } from 'primevue/api';
 import { useFormat } from '@/composables/useFormat';
+import { useConfirm } from 'primevue/useconfirm';
+import { useToast } from 'primevue/usetoast';
 
 const module = 'example';
+const dataKey = 'example_id';
+const columns = 'example_id,example_name,example_date,example_amount,status,is_bool';
+
+const { t } = useI18n();
 const store = useStore();
 const router = useRouter();
 const route = useRoute();
+const confirm = useConfirm();
+const toast = useToast();
 const { fe2be } = usePagingParam();
 const { formatDate, formatCurrency } = useFormat();
 
@@ -62,7 +71,7 @@ const loadPagingData = () => {
 
     let beParam = fe2be(pagingParams.value);
 
-    beParam.columns = 'example_name,example_date,example_amount,status,is_bool';
+    beParam.columns = columns;
 
     //load danh sách
     loadData(beParam);
@@ -97,27 +106,79 @@ const loadDataSummary = (payload) => {
 
 const onPage = (event) => {
     pagingParams.value = event;
-    loadPagingData(event);
+    loadPagingData();
 };
 
 const onSort = (event) => {
     pagingParams.value = event;
-    loadPagingData(event);
+    loadPagingData();
 };
 
-const onFilter = (event) => {
+const onFilter = () => {
     pagingParams.value.filters = filters.value;
-    loadPagingData(event);
+    loadPagingData();
+};
+
+const onSearchInputKeyDown = (event) => {
+    if (event.code === 'Enter' || event.keyCode == 13) {
+        loadPagingData();
+    }
 };
 
 const add = () => {
     let id = 'id';
-    let master = this;
     router.push({
         path: `${route.path}/${id}`,
         meta: {
             id: id,
-            master: master
+            data: {}
+        }
+    });
+};
+
+const view = (data) => {
+    debugger
+};
+
+const edit = (data) => {
+    debugger
+};
+
+const deleteOne = (data) => {
+    confirmDelete([data]);
+};
+
+const deleteMulti = () => {
+    let deleteRecords = [...selectedRecords.value];
+
+    confirmDelete(deleteRecords);
+};
+
+const confirmDelete = (datas) => {
+    confirm.require({
+        header: t('message.HeaderDelete'),
+        message: t('message.MessageDelete'),
+        icon: 'pi pi-info-circle',
+        rejectLabel: t('commandname.CANCEL'),
+        acceptLabel: t('commandname.DELETE'),
+        rejectClass: 'p-button-secondary p-button-outlined',
+        acceptClass: 'p-button-danger',
+        accept: () => {
+            let deleteParam = {
+                Ignores: [],
+                Models: datas,
+                Ids: datas.map((i) => i[dataKey])
+            };
+
+            store.dispatch(`${module}/delete`, deleteParam).then((res) => {
+                if (res) {
+                    debugger
+                    toast.add({ severity: 'success', summary: t('message.SummaryAcceptDelete'), detail: t('message.DetailAcceptDelete'), life: 3000 });
+                }
+            });
+        },
+        reject: () => {
+            toast.add({ severity: 'info', summary: t('message.SummaryRejectDelete'), detail: t('message.DetailRejectDelete'), life: 2000 });
         }
     });
 };
@@ -126,16 +187,9 @@ const add = () => {
 <template>
     <div class="grid">
         <div class="col-12">
-            <Toast />
-            <Toolbar class="">
-                <template v-slot:start>
-                    <Button :label="$t('commandname.ADD')" icon="pi pi-plus" class="p-button-success mr-2" @click="add" />
-                </template>
-            </Toolbar>
-
             <DataTable
                 ref="dt"
-                dataKey="id"
+                :dataKey="dataKey"
                 lazy
                 paginator
                 :loading="loading"
@@ -154,12 +208,19 @@ const add = () => {
                 tableStyle="min-width: 75rem"
             >
                 <template #header>
-                    <div class="flex justify-content-end">
-                        <IconField iconPosition="left">
-                            <InputIcon class="pi pi-search"> </InputIcon>
-                            <InputText v-model="filters['example_name'].value" :placeholder="$t('search')" />
-                        </IconField>
-                    </div>
+                    <Toolbar>
+                        <template #start>
+                            <IconField iconPosition="left">
+                                <InputIcon class="pi pi-search"> </InputIcon>
+                                <InputText v-model="filters['example_name'].value" :placeholder="$t('search')" @keydown="onSearchInputKeyDown"/>
+                            </IconField>
+                        </template>
+
+                        <template #end>
+                            <Button :label="$t('commandname.ADD')" icon="pi pi-plus" class="p-button-success mr-2" @click="add" />
+                            <Button :label="$t('commandname.DELETE')" icon="pi pi-trash" severity="danger" @click="deleteMulti" :disabled="!selectedRecords || !selectedRecords.length" />
+                        </template>
+                    </Toolbar>
                 </template>
 
                 <template #empty> {{ $t('empty') }} </template>
@@ -207,9 +268,19 @@ const add = () => {
                         <TriStateCheckbox v-model="filterModel.value" @change="filterCallback()" />
                     </template>
                 </Column>
+
+                <Column style="width: 12rem" bodyStyle="text-align:center" frozen alignFrozen="right">
+                    <template #body="slotProps">
+                        <Button icon="pi pi-search" outlined rounded severity="info" class="mr-2" @click="view(slotProps.data)" />
+                        <Button icon="pi pi-pencil" outlined rounded severity="warning" class="mr-2" @click="edit(slotProps.data)" />
+                        <Button icon="pi pi-trash" outlined rounded severity="danger" @click="deleteOne(slotProps.data)" />
+                    </template>
+                </Column>
             </DataTable>
         </div>
     </div>
+    <Toast />
+    <ConfirmDialog></ConfirmDialog>
 </template>
 
 <style scoped lang="scss"></style>

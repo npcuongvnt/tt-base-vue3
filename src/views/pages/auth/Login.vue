@@ -5,7 +5,6 @@ import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import AppConfig from '@/layout/AppConfig.vue';
 import { googleTokenLogin, decodeCredential } from 'vue3-google-login';
-import { LogarithmicScale } from 'chart.js';
 
 // import { initFbsdk } from '@/config/facebook.oauth.js';
 
@@ -17,7 +16,6 @@ const password = ref('');
 const checked = ref(false);
 const loading = ref(false);
 const message = ref('');
-// const loginLabel = $t('resource_authen.sign_in');
 
 const logoUrl = computed(() => {
     return `layout/images/${layoutConfig.darkTheme.value ? 'logo-white' : 'logo-dark'}.svg`;
@@ -149,25 +147,25 @@ function requestLoginDone(errMessage) {
                 <div class="w-full surface-card py-8 px-5 sm:px-8" style="border-radius: 53px">
                     <div class="text-center mb-5">
                         <img src="/demo/images/login/avatar.png" alt="Image" height="50" class="mb-3" />
-                        <div class="text-900 text-3xl font-medium mb-3">{{ $t('resource_authen.welcome') }}</div>
-                        <span class="text-600 font-medium">{{ $t('resource_authen.sign_to_continue') }}</span>
+                        <div class="text-900 text-3xl font-medium mb-3">Chao xìn</div>
+                        <span class="text-600 font-medium">Đăng nhập để tiếp tục</span>
                     </div>
 
                     <div>
-                        <label for="username1" class="block text-900 text-xl font-medium mb-2">{{ $t('resource_authen.username') }}</label>
-                        <InputText id="username1" type="text" placeholder="Username" class="w-full md:w-30rem mb-5" style="padding: 1rem" v-model="username" />
+                        <label for="username1" class="block text-900 text-xl font-medium mb-2">Tên đăng nhập</label>
+                        <InputText id="username1" v-model="username" type="text" placeholder="Nhập tên đăng nhập" class="w-full mb-5" style="padding: 1rem" />
 
-                        <label for="password1" class="block text-900 font-medium text-xl mb-2">{{ $t('resource_authen.password') }}</label>
-                        <Password id="password1" v-model="password" placeholder="Password" :toggleMask="true" class="w-full mb-3" inputClass="w-full" :inputStyle="{ padding: '1rem' }"></Password>
+                        <label for="password1" class="block text-900 font-medium text-xl mb-2">Mật khẩu</label>
+                        <Password id="password1" v-model="password" placeholder="Nhập mật khẩu" :toggleMask="true" class="w-full mb-3" inputClass="w-full" :inputStyle="{ padding: '1rem' }"></Password>
 
                         <div class="p-error mb-3" v-if="message">{{ message }}</div>
 
                         <div class="flex align-items-center justify-content-between mb-5 gap-5">
                             <div class="flex align-items-center">
                                 <Checkbox v-model="checked" id="rememberme1" binary class="mr-2"></Checkbox>
-                                <label for="rememberme1">{{ $t('resource_authen.remember') }}</label>
+                                <label for="rememberme1">Ghi nhớ mật khẩu</label>
                             </div>
-                            <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)">{{ $t('resource_authen.forgot_password') }}</a>
+                            <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)">Quên mật khẩu?</a>
                         </div>
                         <Button label="Sign In" class="w-full p-3 text-xl" :loading="loading" @click="signIn()"></Button>
                         <div class="flex align-items-center justify-content-center mt-3">

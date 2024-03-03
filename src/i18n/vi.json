@@ -161,5 +161,13 @@
         "NO": "Không",
         "CANCEL": "Hủy bỏ",
         "BACK": "Quay lại"
+  },
+  "message": {
+        "HeaderDelete": "Xác nhận xóa",
+        "MessageDelete": "Bạn muốn xóa các bản ghi này?",
+        "SummaryAcceptDelete": "Xác nhận",
+        "DetailAcceptDelete": "Đã xóa",
+        "SummaryRejectDelete": "Từ chối",
+        "DetailRejectDelete": "Bạn đã hủy bỏ hành động xóa"
   }
 }

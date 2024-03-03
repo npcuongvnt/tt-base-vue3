@@ -65,7 +65,8 @@ export default class baseAPI {
 
     delete(payload) {
         let req = {
-            url: `${this.getAPIUrl()}/${payload.id}`
+            url: `${this.getAPIUrl()}`,
+            data: payload
         };
 
         return httpClient.deleteAsync(req);
