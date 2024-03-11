@@ -65,7 +65,11 @@ const isOutsideClicked = (event) => {
         </div>
         <div class="layout-main-container">
             <div class="layout-main">
-                <router-view></router-view>
+                <router-view v-slot="{ Component }">
+                    <transition name="fade">
+                        <component :is="Component" />
+                    </transition>
+                </router-view>
             </div>
             <app-footer></app-footer>
         </div>
