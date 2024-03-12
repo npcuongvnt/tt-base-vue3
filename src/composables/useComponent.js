@@ -1,4 +1,3 @@
-
 import AutoComplete from 'primevue/autocomplete';
 import Accordion from 'primevue/accordion';
 import AccordionTab from 'primevue/accordiontab';
@@ -102,10 +101,10 @@ export const useComponent = (app) => {
     app.directive('tooltip', Tooltip);
     app.directive('badge', BadgeDirective);
     app.directive('ripple', Ripple);
-    app.directive('styleclass', StyleClass);    
+    app.directive('styleclass', StyleClass);
 
     app.component('BlockViewer', BlockViewer);
-    app.component('LocaleSwitcher', LocaleSwitcher);    
+    app.component('LocaleSwitcher', LocaleSwitcher);
 
     app.component('Accordion', Accordion);
     app.component('AccordionTab', AccordionTab);
@@ -198,4 +197,4 @@ export const useComponent = (app) => {
     app.component('TreeTable', TreeTable);
     app.component('TriStateCheckbox', TriStateCheckbox);
     app.component('VirtualScroller', VirtualScroller);
-}
+};

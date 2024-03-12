@@ -1,40 +1,13 @@
 <script setup>
-import { ref, onMounted } from 'vue';
-import useBaseList from '@/views/base/baseList'
-import { 
-    useI18n, 
-    useStore, 
-    useRouter, 
-    useRoute, 
-    useConfirm, 
-    useToast, 
-    useFormatUtil,
-    useEnumUtil,
-    usePagingParam,
-    ENUM,
-    CONSTANT
-} from '@/composables';
+import { ref } from 'vue';
+import { useFormatUtil } from '@/composables';
+import useBaseList from '@/views/base/baseList';
 
 const module = 'example';
 const dataKey = 'example_id';
 const columns = 'example_id,example_name,example_date,example_amount,status,is_bool';
 
-const { 
-    pagingParams,
-    loading, 
-    listRecords, 
-    totalRecords,
-    selectedRecords,
-    onPage,
-    onSort,
-    onFilter,
-    onSearchInputKeyDown,
-    add,
-    view,
-    edit,
-    deleteOne,
-    deleteMulti
-} = useBaseList({ module, dataKey, columns });
+const { filters, pagingParams, loading, listRecords, totalRecords, selectedRecords, onPage, onSort, onFilter, onSearchInputKeyDown, add, view, edit, deleteOne, deleteMulti } = useBaseList({ module, dataKey, columns });
 
 //const { t } = useI18n();
 //const store = useStore();
@@ -50,13 +23,6 @@ const dt = ref();
 //const listRecords = ref();
 //const totalRecords = ref(0);
 //const selectedRecords = ref();
-const filters = ref({
-    example_name: { value: '', matchMode: CONSTANT.PrimeConst.FilterMatchMode.CONTAINS },
-    example_date: { value: null, matchMode: CONSTANT.PrimeConst.FilterMatchMode.DATE_IS },
-    example_amount: { value: null, matchMode: CONSTANT.PrimeConst.FilterMatchMode.EQUALS },
-    status: { value: null, matchMode: CONSTANT.PrimeConst.FilterMatchMode.EQUALS },
-    is_bool: { value: null, matchMode: CONSTANT.PrimeConst.FilterMatchMode.EQUALS }
-});
 
 //const pagingParams = ref({
 //    first: 0,
@@ -234,7 +200,7 @@ const getSeverity = (status) => {
                         <template #start>
                             <IconField iconPosition="left">
                                 <InputIcon class="pi pi-search"> </InputIcon>
-                                <InputText v-model="filters['example_name'].value" :placeholder="$t('search')" @keydown="onSearchInputKeyDown"/>
+                                <InputText v-model="filters['example_name'].value" :placeholder="$t('search')" @keydown="onSearchInputKeyDown" />
                             </IconField>
                         </template>
 

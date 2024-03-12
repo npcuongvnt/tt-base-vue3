@@ -8,7 +8,7 @@ import { useRouter, useRoute } from 'vue-router';
 /**
  * prime
  */
-import { useConfirm } from 'primevue/useconfirm';
+import { useConfirm } from 'primevue/useConfirm';
 import { useToast } from 'primevue/usetoast';
 
 /**
@@ -21,19 +21,4 @@ import { usePagingParam } from '@/composables/usePagingParam';
 import * as ENUM from '@/common/enum';
 import * as CONSTANT from '@/common/constant';
 
-export {
-    useI18n,
-    useStore,
-    useRouter,
-    useRoute,
-
-    useConfirm,
-    useToast,
-    
-    useFormatUtil,
-    useEnumUtil,
-    usePagingParam,
-
-    ENUM,
-    CONSTANT
-}
+export { useI18n, useStore, useRouter, useRoute, useConfirm, useToast, useFormatUtil, useEnumUtil, usePagingParam, ENUM, CONSTANT };
