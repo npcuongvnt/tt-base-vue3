@@ -13,37 +13,43 @@ import {
     usePagingParam,
     ENUM,
     CONSTANT
-} from @/composables';
-
+} from '@/composables';
 
 const module = 'example';
 const dataKey = 'example_id';
 const columns = 'example_id,example_name,example_date,example_amount,status,is_bool';
 
 const { 
+    pagingParams,
     loading, 
     listRecords, 
     totalRecords,
+    selectedRecords,
     onPage,
     onSort,
     onFilter,
-    onSearchInputKeyDown
+    onSearchInputKeyDown,
+    add,
+    view,
+    edit,
+    deleteOne,
+    deleteMulti
 } = useBaseList({ module, dataKey, columns });
 
-const { t } = useI18n();
-const store = useStore();
-const router = useRouter();
-const route = useRoute();
-const confirm = useConfirm();
-const toast = useToast();
-const { fe2be } = usePagingParam();
+//const { t } = useI18n();
+//const store = useStore();
+//const router = useRouter();
+//const route = useRoute();
+//const confirm = useConfirm();
+//const toast = useToast();
+//const { fe2be } = usePagingParam();
 const { formatDate, formatCurrency } = useFormatUtil();
 
 const dt = ref();
 //const loading = ref(false);
 //const listRecords = ref();
 //const totalRecords = ref(0);
-const selectedRecords = ref();
+//const selectedRecords = ref();
 const filters = ref({
     example_name: { value: '', matchMode: CONSTANT.PrimeConst.FilterMatchMode.CONTAINS },
     example_date: { value: null, matchMode: CONSTANT.PrimeConst.FilterMatchMode.DATE_IS },
@@ -52,13 +58,13 @@ const filters = ref({
     is_bool: { value: null, matchMode: CONSTANT.PrimeConst.FilterMatchMode.EQUALS }
 });
 
-const pagingParams = ref({
-    first: 0,
-    rows: 10,
-    sortField: null,
-    sortOrder: null,
-    filters: filters.value
-});
+//const pagingParams = ref({
+//    first: 0,
+//    rows: 10,
+//    sortField: null,
+//    sortOrder: null,
+//    filters: filters.value
+//});
 
 const statuses = ref(['unqualified', 'qualified', 'new', 'negotiation', 'renewal', 'proposal']);
 
@@ -141,63 +147,63 @@ const getSeverity = (status) => {
 //    }
 //};
 
-const add = () => {
-    let id = 'id';
-    router.push({
-        path: `${route.path}/${id}`,
-        meta: {
-            id: id,
-            data: {}
-        }
-    });
-};
+//const add = () => {
+//    let id = 'id';
+//    router.push({
+//        path: `${route.path}/${id}`,
+//        meta: {
+//            id: id,
+//            data: {}
+//        }
+//    });
+//};//
 
-const view = (data) => {
-    debugger
-};
+//const view = (data) => {
+//    debugger
+//};//
 
-const edit = (data) => {
-    debugger
-};
+//const edit = (data) => {
+//    debugger
+//};//
 
-const deleteOne = (data) => {
-    confirmDelete([data]);
-};
+//const deleteOne = (data) => {
+//    confirmDelete([data]);
+//};//
 
-const deleteMulti = () => {
-    let deleteRecords = [...selectedRecords.value];
+//const deleteMulti = () => {
+//    let deleteRecords = [...selectedRecords.value];//
 
-    confirmDelete(deleteRecords);
-};
+//    confirmDelete(deleteRecords);
+//};//
 
-const confirmDelete = (datas) => {
-    confirm.require({
-        header: t('message.HeaderDelete'),
-        message: t('message.MessageDelete'),
-        icon: 'pi pi-info-circle',
-        rejectLabel: t('commandname.CANCEL'),
-        acceptLabel: t('commandname.DELETE'),
-        rejectClass: 'p-button-secondary p-button-outlined',
-        acceptClass: 'p-button-danger',
-        accept: () => {
-            let deleteParam = {
-                Ignores: [],
-                Models: datas,
-                Ids: datas.map((i) => i[dataKey])
-            };
+//const confirmDelete = (datas) => {
+//    confirm.require({
+//        header: t('message.HeaderDelete'),
+//        message: t('message.MessageDelete'),
+//        icon: 'pi pi-info-circle',
+//        rejectLabel: t('commandname.CANCEL'),
+//        acceptLabel: t('commandname.DELETE'),
+//        rejectClass: 'p-button-secondary p-button-outlined',
+//        acceptClass: 'p-button-danger',
+//        accept: () => {
+//            let deleteParam = {
+//                Ignores: [],
+//                Models: datas,
+//                Ids: datas.map((i) => i[dataKey])
+//            };//
 
-            store.dispatch(`${module}/delete`, deleteParam).then((res) => {
-                if (res) {
-                    debugger
-                    toast.add({ severity: 'success', summary: t('message.SummaryAcceptDelete'), detail: t('message.DetailAcceptDelete'), life: 3000 });
-                }
-            });
-        },
-        reject: () => {
-            toast.add({ severity: 'info', summary: t('message.SummaryRejectDelete'), detail: t('message.DetailRejectDelete'), life: 2000 });
-        }
-    });
-};
+//            store.dispatch(`${module}/delete`, deleteParam).then((res) => {
+//                if (res) {
+//                    debugger
+//                    toast.add({ severity: 'success', summary: t('message.SummaryAcceptDelete'), detail: t('message.DetailAcceptDelete'), life: 3000 });
+//                }
+//            });
+//        },
+//        reject: () => {
+//            toast.add({ severity: 'info', summary: t('message.SummaryRejectDelete'), detail: t('message.DetailRejectDelete'), life: 2000 });
+//        }
+//    });
+//};
 </script>
 
 <template>
