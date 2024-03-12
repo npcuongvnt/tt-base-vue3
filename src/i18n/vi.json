@@ -162,6 +162,11 @@
         "CANCEL": "Hủy bỏ",
         "BACK": "Quay lại"
   },
+  "enumeration": {
+        "ExampleStatus_None": "Không",
+        "ExampleStatus_Send": "Đã gửi",
+        "ExampleStatus_Reject": "Từ chối"
+  },
   "message": {
         "HeaderDelete": "Xác nhận xóa",
         "MessageDelete": "Bạn muốn xóa các bản ghi này?",

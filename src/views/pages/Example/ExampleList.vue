@@ -1,14 +1,18 @@
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { useStore } from 'vuex';
-import { useRouter, useRoute } from 'vue-router';
-import { usePagingParam } from '@/composables/usePagingParam';
-import { PagingDataType } from '@/common/enum';
-import { FilterMatchMode } from 'primevue/api';
-import { useFormat } from '@/composables/useFormat';
-import { useConfirm } from 'primevue/useconfirm';
-import { useToast } from 'primevue/usetoast';
+import { 
+    useI18n, 
+    useStore, 
+    useRouter, 
+    useRoute, 
+    useConfirm, 
+    useToast, 
+    useFormatUtil,
+    useEnumUtil,
+    usePagingParam,
+    ENUM,
+    CONSTANT
+} from @/composables';
 
 const module = 'example';
 const dataKey = 'example_id';
@@ -21,7 +25,7 @@ const route = useRoute();
 const confirm = useConfirm();
 const toast = useToast();
 const { fe2be } = usePagingParam();
-const { formatDate, formatCurrency } = useFormat();
+const { formatDate, formatCurrency } = useFormatUtil();
 
 const dt = ref();
 const loading = ref(false);
@@ -29,11 +33,11 @@ const listRecords = ref();
 const totalRecords = ref(0);
 const selectedRecords = ref();
 const filters = ref({
-    example_name: { value: '', matchMode: FilterMatchMode.CONTAINS },
-    example_date: { value: null, matchMode: FilterMatchMode.DATE_IS },
-    example_amount: { value: null, matchMode: FilterMatchMode.EQUALS },
-    status: { value: null, matchMode: FilterMatchMode.EQUALS },
-    is_bool: { value: null, matchMode: FilterMatchMode.EQUALS }
+    example_name: { value: '', matchMode: CONSTANT.PrimeConst.FilterMatchMode.CONTAINS },
+    example_date: { value: null, matchMode: CONSTANT.PrimeConst.FilterMatchMode.DATE_IS },
+    example_amount: { value: null, matchMode: CONSTANT.PrimeConst.FilterMatchMode.EQUALS },
+    status: { value: null, matchMode: CONSTANT.PrimeConst.FilterMatchMode.EQUALS },
+    is_bool: { value: null, matchMode: CONSTANT.PrimeConst.FilterMatchMode.EQUALS }
 });
 
 const pagingParams = ref({
@@ -82,7 +86,7 @@ const loadPagingData = () => {
 
 const loadData = (payload) => {
     if (payload) {
-        payload['type'] = PagingDataType.DATA;
+        payload['type'] = ENUM.PagingDataType.DATA;
     }
     store.dispatch(`${module}/paging`, payload).then((res) => {
         if (res) {
@@ -94,7 +98,7 @@ const loadData = (payload) => {
 
 const loadDataSummary = (payload) => {
     if (payload) {
-        payload['type'] = PagingDataType.SUMMARY;
+        payload['type'] = ENUM.PagingDataType.SUMMARY;
     }
 
     store.dispatch(`${module}/paging`, payload).then((res) => {
@@ -227,7 +231,7 @@ const confirmDelete = (datas) => {
 
                 <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
 
-                <Column field="example_name" header="Tên" filterMatchMode="startsWith" sortable>
+                <Column field="example_name" header="Tên" sortable>
                     <template #filter="{ filterModel, filterCallback }">
                         <InputText type="text" v-model="filterModel.value" @keydown.enter="filterCallback()" class="p-column-filter" />
                     </template>

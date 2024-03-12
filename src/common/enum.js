@@ -9,22 +9,6 @@ const ViewMode = {
 };
 
 /**
- * Các nút hành động cơ bản trên chương trình
- */
-const CommandName = {
-    REFRESH: 'REFRESH',
-    VIEW: 'VIEW',
-    ADD: 'ADD',
-    EDIT: 'EDIT',
-    DELETE: 'DELETE',
-    SAVE: 'SAVE',
-    YES: 'YES',
-    NO: 'NO',
-    CANCEL: 'CANCEL',
-    BACK: 'BACK'
-};
-
-/**
  * Trạng thái của bản ghi đẩy lên server
  */
 const ModelState = {
@@ -45,4 +29,15 @@ const PagingDataType = {
     SUMMARY: 1
 };
 
-export { ViewMode, CommandName, ModelState, PagingDataType };
+const ExampleStatus = {
+    None: 0,
+    Send: 1,
+    Reject: 2
+};
+
+export {
+    ViewMode, 
+    ModelState, 
+    PagingDataType,
+    ExampleStatus
+};

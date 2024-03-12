@@ -1,4 +1,4 @@
-export function useFormat() {
+export function useFormatUtil() {
     function formatDate(value) {
         if (typeof value === 'undefined' || value == null) {
             return null;
