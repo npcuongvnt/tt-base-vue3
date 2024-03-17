@@ -3,7 +3,7 @@ import { FilterMatchMode, FilterOperator } from 'primevue/api';
 const PrimeConst = {
     FilterMatchMode,
     FilterOperator
-}
+};
 
 const AUTH = {
     USERLOCALSTORAGE: 'user',
@@ -20,6 +20,7 @@ const CommandName = {
     ADD: 'ADD',
     EDIT: 'EDIT',
     DELETE: 'DELETE',
+    DELETEMULTI: 'DELETEMULTI',
     SAVE: 'SAVE',
     YES: 'YES',
     NO: 'NO',
@@ -27,8 +28,4 @@ const CommandName = {
     BACK: 'BACK'
 };
 
-export {
-    PrimeConst,
-    AUTH,
-    CommandName
-}
+export { PrimeConst, AUTH, CommandName };

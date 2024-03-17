@@ -11,9 +11,12 @@ export function usePagingParam() {
      * @param {*} type
      * @returns
      */
-    const fe2be = (fePagingParams, type) => {
+    const fe2be = (fePagingParams, columns, type) => {
         let bePagingParams = {
-            columns: fePagingParams.columns || '*',
+            columns:
+                Object.keys(columns)
+                    .map((key) => `${key}`)
+                    .join(',') || '*',
             filter: fe2beFilter(fePagingParams.filters),
             type: type || 0,
             skip: fePagingParams.first,
@@ -36,7 +39,6 @@ export function usePagingParam() {
 
         for (const prop in feFilters) {
             if (Object.prototype.hasOwnProperty.call(feFilters, prop)) {
-
                 //Néu có filter thì mới truyền where lên.
                 //Cần xem lại chỗ này xem như nào thì hợp lý
                 if (feFilters[prop].value != null && feFilters[prop].value != '') {

@@ -4,7 +4,6 @@ import AccordionTab from 'primevue/accordiontab';
 import Avatar from 'primevue/avatar';
 import AvatarGroup from 'primevue/avatargroup';
 import Badge from 'primevue/badge';
-import BadgeDirective from 'primevue/badgedirective';
 import BlockUI from 'primevue/blockui';
 import Button from 'primevue/button';
 import Breadcrumb from 'primevue/breadcrumb';
@@ -62,7 +61,6 @@ import ProgressBar from 'primevue/progressbar';
 import ProgressSpinner from 'primevue/progressspinner';
 import Rating from 'primevue/rating';
 import RadioButton from 'primevue/radiobutton';
-import Ripple from 'primevue/ripple';
 import Row from 'primevue/row';
 import SelectButton from 'primevue/selectbutton';
 import ScrollPanel from 'primevue/scrollpanel';
@@ -75,7 +73,6 @@ import SplitButton from 'primevue/splitbutton';
 import Splitter from 'primevue/splitter';
 import SplitterPanel from 'primevue/splitterpanel';
 import Steps from 'primevue/steps';
-import StyleClass from 'primevue/styleclass';
 import TabMenu from 'primevue/tabmenu';
 import TieredMenu from 'primevue/tieredmenu';
 import Textarea from 'primevue/textarea';
@@ -87,7 +84,6 @@ import Tag from 'primevue/tag';
 import Terminal from 'primevue/terminal';
 import Timeline from 'primevue/timeline';
 import ToggleButton from 'primevue/togglebutton';
-import Tooltip from 'primevue/tooltip';
 import Tree from 'primevue/tree';
 import TreeSelect from 'primevue/treeselect';
 import TreeTable from 'primevue/treetable';
@@ -98,11 +94,6 @@ import BlockViewer from '@/components/BlockViewer.vue';
 import LocaleSwitcher from '@/components/LocaleSwitcher.vue';
 
 export const useComponent = (app) => {
-    app.directive('tooltip', Tooltip);
-    app.directive('badge', BadgeDirective);
-    app.directive('ripple', Ripple);
-    app.directive('styleclass', StyleClass);
-
     app.component('BlockViewer', BlockViewer);
     app.component('LocaleSwitcher', LocaleSwitcher);
 

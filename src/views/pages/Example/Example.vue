@@ -18,15 +18,17 @@ const back = () => {
 </script>
 
 <template>
+    <Toast />
+    <ConfirmDialog></ConfirmDialog>
     <div class="col-12">
         <Toolbar>
             <template v-slot:start>
-                <Button icon="pi pi-arrow-left" class="mr-2 p-button-sm" outlined commandName="BACK" @click="back()" />
+                <Button icon="pi pi-arrow-left" class="p-button-sm" outlined commandName="BACK" @click="back()" />
             </template>
             <template v-slot:end>
-                <Button label="Sửa" icon="pi pi-pencil" class="mr-2 p-button-sm" outlined disabled commandName="EDIT" />
-                <Button label="Lưu" icon="pi pi-save" class="p-button-sm p-button-success mr-2" commandName="SAVE" />
-                <Button label="Xóa" icon="pi pi-trash" class="p-button-sm p-button-danger mr-2" commandName="DELETE" />
+                <Button label="Sửa" icon="pi pi-pencil" class="mr-2" outlined disabled commandName="EDIT" />
+                <Button label="Lưu" icon="pi pi-save" class="p-button-success mr-2" commandName="SAVE" />
+                <Button label="Xóa" icon="pi pi-trash" class="p-button-danger mr-2" commandName="DELETE" />
             </template>
         </Toolbar>
     </div>
