@@ -112,7 +112,7 @@ export default (config) => {
                 deleteOne(data);
                 break;
             case CONSTANT.CommandName.DELETEMULTI:
-                deleteMulti(data);
+                deletes(data);
                 break;
         }
     };
@@ -120,7 +120,11 @@ export default (config) => {
     const add = () => {
         let id = 'id';
         router.push({
-            path: `${route.path}/${id}`
+            path: `${route.path}/${id}`,
+            meta: {
+                id: id,
+                viewMode: ENUM.ViewMode.ADD
+            }
         });
     };
 
@@ -132,11 +136,21 @@ export default (config) => {
         console.log(data);
     };
 
+    showDetail = (mode, id) => {
+        router.push({
+            path: `${route.path}/${id}`,
+            meta: {
+                id: id,
+                viewMode: mode
+            }
+        });
+    };
+
     const deleteOne = (data) => {
         confirmDelete([data]);
     };
 
-    const deleteMulti = () => {
+    const deletes = () => {
         let deleteRecords = [...selectedRecords.value];
 
         confirmDelete(deleteRecords);

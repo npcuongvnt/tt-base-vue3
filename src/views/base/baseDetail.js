@@ -1,5 +1,5 @@
 import { ref, onMounted } from 'vue';
-import { useI18n, useStore, useRouter, useRoute, useConfirm, useToast, usePagingParam, ENUM, CONSTANT } from '@/composables';
+import { useI18n, useStore, useRouter, useRoute, useConfirm, useToast, ENUM, CONSTANT } from '@/composables';
 
 export default (config) => {
     const { t } = useI18n();
@@ -8,123 +8,68 @@ export default (config) => {
     const route = useRoute();
     const confirm = useConfirm();
     const toast = useToast();
-    const { fe2be } = usePagingParam();
 
-    const dataKey = ref();
     const loading = ref(false);
-    const listRecords = ref();
-    const totalRecords = ref(0);
-    const selectedRecords = ref();
-
-    const { module, columns } = config;
-    const filters = ref({ ...columns.value });
-
-    for (const [key, item] of Object.entries(columns.value)) {
-        if (item['isKey']) {
-            dataKey.value = key;
-        }
-    }
-
-    const pagingParams = ref({
-        first: 0,
-        rows: 10,
-        sortField: null,
-        sortOrder: null,
-        filters: filters.value
-    });
+    const model = ref({});
+    const viewMode = ref(ENUM.ViewMode.ADD);
+    const id = ref();
 
     onMounted(() => {
         console.log('Mounted');
+        loading.value = true;
 
-        loadPagingData();
+        viewMode.value = config.viewMode; 
+        id.value = config.id; 
+
+        setViewMode(viewMode.value);
+
+        var data = await loadData();
+        
+        beforeBinding(data);
+        
+        bindingData(data);
+        
+        afterBinding(data);
     });
 
-    const loadPagingData = () => {
-        loading.value = true;
-        pagingParams.value = { ...pagingParams.value };
-
-        let beParam = fe2be(pagingParams.value, columns.value);
-
-        //load danh sách
-        loadData(beParam);
-
-        //load tổng số
-        loadDataSummary(beParam);
+    const loadData = async() => {
+        return {}
     };
 
-    const loadData = (payload) => {
-        if (payload) {
-            payload['type'] = ENUM.PagingDataType.DATA;
-        }
-        store.dispatch(`${module}/paging`, payload).then((res) => {
-            if (res) {
-                listRecords.value = res.pageData;
-            }
-            loading.value = false;
-        });
-    };
+    const beforeBinding = (data) => {
 
-    const loadDataSummary = (payload) => {
-        if (payload) {
-            payload['type'] = ENUM.PagingDataType.SUMMARY;
-        }
+    },
 
-        store.dispatch(`${module}/paging`, payload).then((res) => {
-            if (res) {
-                totalRecords.value = res.total;
-            }
-        });
-    };
+    const bindingData = (data) => {
 
-    const onPage = (event) => {
-        pagingParams.value = event;
-        loadPagingData();
-    };
+    },
 
-    const onSort = (event) => {
-        pagingParams.value = event;
-        loadPagingData();
-    };
+    const afterBinding = (data) => {
 
-    const onFilter = () => {
-        pagingParams.value.filters = filters.value;
-        loadPagingData();
-    };
+    },
 
-    const onSearchInputKeyDown = (event) => {
-        if (event.code === 'Enter' || event.keyCode == 13) {
-            loadPagingData();
-        }
-    };
+    const setViewMode = (mode) => {
+        viewMode.value = mode;
+    },
 
-    const onCommandClick = (commandName, data) => {
+    const onCommandClick = (commandName) => {
         switch (commandName) {
-            case CONSTANT.CommandName.ADD:
-                add();
-                break;
-            case CONSTANT.CommandName.VIEW:
-                view(data);
+            case CONSTANT.CommandName.SAVE:
+                save();
                 break;
             case CONSTANT.CommandName.EDIT:
-                edit(data);
+                edit();
                 break;
             case CONSTANT.CommandName.DELETE:
-                deleteOne(data);
+                deletes();
                 break;
-            case CONSTANT.CommandName.DELETEMULTI:
-                deleteMulti(data);
-                break;
+            case CONSTANT.CommandName.BACK:
+                back();
+                break;                
         }
     };
 
-    const add = () => {
-        let id = 'id';
-        router.push({
-            path: `${route.path}/${id}`
-        });
-    };
-
-    const view = (data) => {
+    const save = (data) => {
         console.log(data);
     };
 
@@ -132,17 +77,9 @@ export default (config) => {
         console.log(data);
     };
 
-    const deleteOne = (data) => {
-        confirmDelete([data]);
-    };
+    const deletes = () => {
+        let datas = [model.value]
 
-    const deleteMulti = () => {
-        let deleteRecords = [...selectedRecords.value];
-
-        confirmDelete(deleteRecords);
-    };
-
-    const confirmDelete = (datas) => {
         confirm.require({
             header: t('message.HeaderDelete'),
             message: t('message.MessageDelete'),
@@ -155,15 +92,15 @@ export default (config) => {
                 let deleteParam = {
                     Ignores: [],
                     Models: datas,
-                    Ids: datas.map((i) => i[dataKey.value])
+                    Ids: [id.value]
                 };
 
                 store.dispatch(`${module}/delete`, deleteParam).then((res) => {
                     if (res) {
                         toast.add({ severity: 'success', summary: t('message.SummaryAcceptDelete'), detail: t('message.DetailAcceptDelete'), life: 3000 });
 
-                        //Load lại danh sách
-                        loadPagingData();
+                        //back lại danh sách
+                        back();
                     }
                 });
             },
@@ -173,18 +110,13 @@ export default (config) => {
         });
     };
 
+    const back = () => {
+        router.back();
+    };
+
     return {
-        dataKey,
-        filters,
-        pagingParams,
-        loading,
-        listRecords,
-        totalRecords,
-        selectedRecords,
-        onPage,
-        onSort,
-        onFilter,
-        onSearchInputKeyDown,
+        model,
+        viewMode,
         onCommandClick
     };
 };

@@ -1,8 +1,15 @@
 <script setup>
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { router, route, ENUM } from '@/composables';
+import useBaseDetail from '@/views/base/baseDetail';
 
 const router = useRouter();
+const route = useRoute();
+
+const viewMode = ref(ENUM.ViewMode.ADD);
+const id = ref(ENUM.ViewMode.ADD);
+
+const { model, viewMode, onCommandClick } = useBaseDetail({ viewMode: viewMode.value, id: id.value });
 
 const dropdownItems = ref([
     { name: 'Option 1', code: 'Option 1' },
@@ -12,9 +19,11 @@ const dropdownItems = ref([
 
 const dropdownItem = ref(null);
 
-const back = () => {
-    router.back();
-};
+onMounted(() => {
+    console.log('Example Mounted');
+});
+
+
 </script>
 
 <template>
