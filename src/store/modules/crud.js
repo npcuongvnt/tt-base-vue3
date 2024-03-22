@@ -19,6 +19,18 @@ export default class {
 
                 return res;
             },
+            async new({ commit }, param) {
+                let res = null;
+
+                try {
+                    commit('updateLoading', true);
+                    res = await api.new(param);
+                } finally {
+                    commit('updateLoading', false);
+                }
+
+                return res;
+            },
             async getById({ commit }, param) {
                 let res = null;
 
@@ -70,8 +82,8 @@ export default class {
         };
 
         me.mutations = {
-            updateLoading(state, data) {
-                state.loading = data;
+            updateLoading(state, loadingStatus) {
+                state.loading = loadingStatus;
             }
         };
     }

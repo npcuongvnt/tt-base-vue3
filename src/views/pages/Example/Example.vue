@@ -23,7 +23,6 @@ onMounted(() => {
     console.log('Example Mounted');
 });
 
-
 </script>
 
 <template>
@@ -32,12 +31,12 @@ onMounted(() => {
     <div class="col-12">
         <Toolbar>
             <template v-slot:start>
-                <Button icon="pi pi-arrow-left" class="p-button-sm" outlined commandName="BACK" @click="back()" />
+                <Button icon="pi pi-arrow-left" class="p-button-sm" @click="onCommandClick(CONSTANT.CommandName.BACK)" />
             </template>
             <template v-slot:end>
-                <Button label="Sửa" icon="pi pi-pencil" class="mr-2" outlined disabled commandName="EDIT" />
-                <Button label="Lưu" icon="pi pi-save" class="p-button-success mr-2" commandName="SAVE" />
-                <Button label="Xóa" icon="pi pi-trash" class="p-button-danger mr-2" commandName="DELETE" />
+                <Button label="Sửa" icon="pi pi-pencil" class="mr-2" disabled @click="onCommandClick(CONSTANT.CommandName.EDIT)"/>
+                <Button label="Lưu" icon="pi pi-save" class="p-button-success mr-2" @click="onCommandClick(CONSTANT.CommandName.SAVE)"/>
+                <Button label="Xóa" icon="pi pi-trash" class="p-button-danger mr-2" @click="onCommandClick(CONSTANT.CommandName.DELETE)"/>
             </template>
         </Toolbar>
     </div>

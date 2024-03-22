@@ -1,4 +1,4 @@
-import { ref, onMounted } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 import { useI18n, useStore, useRouter, useRoute, useConfirm, useToast, ENUM, CONSTANT } from '@/composables';
 
 export default (config) => {
@@ -9,8 +9,8 @@ export default (config) => {
     const confirm = useConfirm();
     const toast = useToast();
 
-    const loading = ref(false);
     const model = ref({});
+    const loading = ref(false);
     const viewMode = ref(ENUM.ViewMode.ADD);
     const id = ref();
 
@@ -18,22 +18,36 @@ export default (config) => {
         console.log('Mounted');
         loading.value = true;
 
-        viewMode.value = config.viewMode; 
-        id.value = config.id; 
-
-        setViewMode(viewMode.value);
-
+        if (config) {
+            viewMode.value = config.viewMode; 
+            id.value = config.id; 
+        }
+        
         var data = await loadData();
         
         beforeBinding(data);
         
         bindingData(data);
-        
-        afterBinding(data);
+
+        setFormMode(viewMode.value);
     });
 
     const loadData = async() => {
-        return {}
+        let result = {},
+            param = {
+                id: id.value
+            }
+
+        switch (viewMode.value) {
+            case ENUM.ViewMode.ADD:
+                result = await store.dispatch(`${module}/new`, param);
+                break;
+            case ENUM.ViewMode.EDIT:
+                result = await store.dispatch(`${module}/getById`, param);
+                break;
+        }
+
+        return result;
     };
 
     const beforeBinding = (data) => {
@@ -41,15 +55,14 @@ export default (config) => {
     },
 
     const bindingData = (data) => {
-
+        model.value = data;
     },
 
-    const afterBinding = (data) => {
-
-    },
-
-    const setViewMode = (mode) => {
+    const setFormMode = (mode) => {
         viewMode.value = mode;
+
+        //unmask
+        loading.value = false;
     },
 
     const onCommandClick = (commandName) => {
@@ -69,12 +82,18 @@ export default (config) => {
         }
     };
 
-    const save = (data) => {
-        console.log(data);
+    const save = (fnCallback) => {
+
+        //TODO
+
+        if (typeof fnCallback === 'function') {
+            fnCallback();
+        }
     };
 
-    const edit = (data) => {
-        console.log(data);
+    const edit = () => {
+
+        //TODO
     };
 
     const deletes = () => {
@@ -111,7 +130,35 @@ export default (config) => {
     };
 
     const back = () => {
-        router.back();
+        let doBack = true;
+        if (viewMode.value === ENUM.ViewMode.ADD || viewMode.value === ENUM.ViewMode.EDIT) 
+        {
+            if(checkChange()) {
+                doBack = false;
+            }
+        }
+
+        if (doBack) {
+            router.back();
+        } else {
+            confirm.require({
+                header: t('message.HeaderCheckChange'),
+                message: t('message.MessageCheckChange'),
+                icon: 'pi pi-info-circle',
+                rejectLabel: t('commandname.CANCEL'),
+                acceptLabel: t('commandname.SAVE'),
+                rejectClass: 'p-button-secondary p-button-outlined',
+                accept: () => {
+                    const fnCallback = () => {
+                        router.back();
+                    }
+                    save(fnCallback);
+                },
+                reject: () => {
+                    router.back();
+                }
+            });
+        }
     };
 
     return {

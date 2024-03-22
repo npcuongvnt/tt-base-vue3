@@ -37,6 +37,15 @@ export default class baseAPI {
         return httpClient.postAsync(req);
     }
 
+    new(payload) {
+        let req = {
+            url: this.getAPIUrl() + '/new',
+            data: payload
+        };
+
+        return httpClient.postAsync(req);
+    }
+
     getById(payload) {
         let req = {
             url: `${this.getAPIUrl()}/${payload.id}`
