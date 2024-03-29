@@ -193,7 +193,9 @@ const router = createRouter({
             name: 'error',
             component: () => import('@/views/pages/auth/Error.vue'),
             meta: { anonymous: true }
-        }
+        },
+        // otherwise redirect to home
+        { path: '/:pathMatch(.*)*', redirect: '/' }
     ]
 });
 

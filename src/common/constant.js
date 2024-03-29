@@ -6,9 +6,16 @@ const PrimeConst = {
 };
 
 const AUTH = {
+    Authorization: 'Authorization',
     USERLOCALSTORAGE: 'user',
     HTTP_AccessToken: 'x-access-token',
     HTTP_RefreshToken: 'x-refresh-token'
+};
+
+const CONTENT_TYPE = {
+    ApplicationJSON = 'application/json',
+    FormUrlEncoded = 'application/x-www-form-urlencoded',
+    FormMultiPart = 'multipart/form-data'
 };
 
 /**
@@ -28,4 +35,4 @@ const CommandName = {
     BACK: 'BACK'
 };
 
-export { PrimeConst, AUTH, CommandName };
+export { PrimeConst, AUTH, CommandName, CONTENT_TYPE };

@@ -1,4 +1,4 @@
-import baseService from './BaseService';
+import baseService from './base.service';
 
 class userService extends baseService {
     constructor() {

@@ -1,7 +1,7 @@
 import crudModule from '@/store/modules/crud';
-import userService from '@/service/UserService';
+import roleService from '@/service/role.service';
 
-const crud = new crudModule(userService);
+const crud = new crudModule(roleService);
 
 export default {
     namespaced: true,

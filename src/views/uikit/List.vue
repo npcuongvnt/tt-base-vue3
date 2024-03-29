@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue';
-import ProductService from '@/service/ProductService';
+import ProductService from '@/service/demo/product.service';
 
 const picklistValue = ref([
     [

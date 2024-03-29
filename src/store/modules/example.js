@@ -1,5 +1,5 @@
 import crudModule from '@/store/modules/crud';
-import exampleService from '@/service/ExampleService';
+import exampleService from '@/service/example.service';
 
 const crud = new crudModule(exampleService);
 

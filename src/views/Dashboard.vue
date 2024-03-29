@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, reactive, ref, watch } from 'vue';
-import ProductService from '@/service/ProductService';
+import ProductService from '@/service/demo/product.service';
 import { useLayout } from '@/layout/composables/layout';
 
 const { isDarkTheme } = useLayout();
