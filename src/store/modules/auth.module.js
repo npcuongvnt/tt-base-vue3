@@ -1,6 +1,7 @@
+import TokenService from "@/service/token.service";
 import AuthService from '@/service/auth.service';
 
-const user = JSON.parse(localStorage.getItem('user'));
+const user = TokenService.getUser();
 const initialState = user ? { status: { loggedIn: true }, user } : { status: { loggedIn: false }, user: null };
 
 export default {
@@ -34,6 +35,9 @@ export default {
                     return Promise.reject(error);
                 }
             );
+        },
+        refreshToken({ commit }, accessToken) {
+            commit('refreshToken', accessToken);
         }
     },
     mutations: {
@@ -54,6 +58,10 @@ export default {
         },
         registerFailure(state) {
             state.status.loggedIn = false;
+        },
+        refreshToken(state, accessToken) {
+            state.status.loggedIn = true;
+            state.user = { ...state.user, accessToken: accessToken };
         }
     }
 };

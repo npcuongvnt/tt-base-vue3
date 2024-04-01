@@ -1,11 +1,10 @@
-import baseService from './base.service';
+import BaseService from './base.service';
 
-class exampleService extends baseService {
+class ExampleService extends BaseService {
     constructor() {
-        super();
-
         this.controllerName = 'example';
+        super();
     }
 }
 
-export default new exampleService();
+export default new ExampleService();

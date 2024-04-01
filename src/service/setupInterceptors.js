@@ -1,5 +1,7 @@
+import { AUTH } from "@/common/constant";
 import api from "./api";
-import { AUTH } from "../common/constant";
+import AuthService from '@/service/auth.service';
+import TokenService from "@/service/token.service";
 
 const setup = (store) => {
   /**
@@ -7,11 +9,11 @@ const setup = (store) => {
    */
   api.interceptors.request.use(
     (req) => {
-      let user = JSON.parse(localStorage.getItem(AUTH.USERLOCALSTORAGE));
+      let user = TokenService.getUser();
       if (user && user.accessToken && user.refreshToken) {
-        req.headers[AUTH.HTTP_AccessToken] = user.accessToken;
-        req.headers[AUTH.HTTP_RefreshToken] = user.refreshToken;
-        req.headers[AUTH.Authorization] = "Bearer " + user.accessToken;
+        req.headers[AUTH.AccessToken_Key] = user.accessToken;
+        req.headers[AUTH.RefreshToken_Key] = user.refreshToken;
+        req.headers[AUTH.Authorization_Key] = "Bearer " + user.accessToken;
       }
 
       return req;
@@ -34,16 +36,15 @@ const setup = (store) => {
       if (originalConfig.url !== "/auth/signin" && err.response) {
         // Access Token was expired
         if (err.response.status === 401 && !originalConfig._retry) {
+
+          //set lại retry để chỉ retry 1 lần
           originalConfig._retry = true;
 
           try {
-            const rs = await api.post("/auth/refreshtoken", {
-              refreshToken: TokenService.getLocalRefreshToken(),
-            });
+            const refreshTokenRes = await AuthService.refreshtoken({ refreshToken: TokenService.getLocalRefreshToken()});
+            const { accessToken } = refreshTokenRes.data;
 
-            const { accessToken } = rs.data;
-
-            store.dispatch("auth/refreshToken", accessToken);
+            store.dispatch('auth/refreshToken', accessToken);
             TokenService.updateLocalAccessToken(accessToken);
 
             return api(originalConfig);

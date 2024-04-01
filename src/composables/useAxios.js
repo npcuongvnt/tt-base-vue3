@@ -1,6 +1,6 @@
 import { unref, ref } from 'vue';
 import axios from 'axios';
-import { AUTH } from '../common/constant';
+import { AUTH } from '@/common/constant';
 
 export const ApplicationJSON = 'application/json';
 export const FormUrlEncoded = 'application/x-www-form-urlencoded';
@@ -22,11 +22,11 @@ const _processHeader = (config) => {
 
     let headers = config.headers || {};
 
-    let user = JSON.parse(localStorage.getItem(AUTH.USERLOCALSTORAGE));
+    let user = JSON.parse(localStorage.getItem(AUTH.UserLocalStorage_Key));
     if (user && user.accessToken && user.refreshToken) {
         // for Node.js Express back-end
-        headers[AUTH.HTTP_AccessToken] = user.accessToken;
-        headers[AUTH.HTTP_RefreshToken] = user.refreshToken;
+        headers[AUTH.AccessToken_Key] = user.accessToken;
+        headers[AUTH.RefreshToken_Key] = user.refreshToken;
     }
 
     config.headers = headers;

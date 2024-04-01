@@ -1,7 +1,7 @@
-import crudModule from '@/store/modules/crud';
-import exampleService from '@/service/example.service';
+import crudModule from '@/store/modules/crud.module';
+import ExampleService from '@/service/example.service';
 
-const crud = new crudModule(exampleService);
+const crud = new crudModule(ExampleService);
 
 export default {
     namespaced: true,

@@ -1,4 +1,4 @@
-import crudModule from '@/store/modules/crud';
+import crudModule from '@/store/modules/crud.module';
 import roleService from '@/service/role.service';
 
 const crud = new crudModule(roleService);

@@ -6,10 +6,10 @@ const PrimeConst = {
 };
 
 const AUTH = {
-    Authorization: 'Authorization',
-    USERLOCALSTORAGE: 'user',
-    HTTP_AccessToken: 'x-access-token',
-    HTTP_RefreshToken: 'x-refresh-token'
+    UserLocalStorage_Key: 'user',
+    Authorization_Key: 'Authorization',
+    AccessToken_Key: 'x-access-token',
+    RefreshToken_Key: 'x-refresh-token'
 };
 
 const CONTENT_TYPE = {

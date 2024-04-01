@@ -7,13 +7,16 @@ import PrimeVue from 'primevue/config';
 import { useComponent } from './composables/useComponent';
 import { useService } from './composables/useService';
 import { useDirective } from './composables/useDirective';
+import setupInterceptors from './services/setupInterceptors';
+import vue3GoogleLogin from 'vue3-google-login';
 
 import 'primevue/resources/themes/aura-light-green/theme.css';
 import '@/assets/styles.scss';
 
-import vue3GoogleLogin from 'vue3-google-login';
-
 const app = createApp(App);
+
+//axios interceptor
+setupInterceptors(store);
 
 app.use(router);
 app.use(store);
