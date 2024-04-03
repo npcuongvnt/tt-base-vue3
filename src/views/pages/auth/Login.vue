@@ -32,15 +32,6 @@ function signIn() {
     message.value = '';
     loading.value = true;
 
-    //Develop thì cho pass luôn
-    if (import.meta.env.DEV) {
-        router.push({
-            name: 'dashboard'
-        });
-        loading.value = false;
-        return;
-    }
-
     store.dispatch('auth/login', { userName: username.value, password: password.value }).then(
         (res) => {
             let resMessage = null;
@@ -73,7 +64,7 @@ const callbackGoogleSignIn = (response) => {
 
 function signInWithGoogle() {
     googleTokenLogin().then((response) => {
-        console.log('Handle the response:', response);
+
         // response = {
         //     access_token: 'ya29.a0AfB_byDkFYgIpWZuTVYHJayjgHffdQtczNfK_GgA9Y1-RGD970oH9W0Sw-tFaLIOrRuA3xcqgIFgnWAwrzhNBCwrbP2gDzZwxIVOKVHlv6LM_nHnjJ6GCMHM4FBLsa7R7NqdMa8XqLC_CR00PXi_L4ItMcdo6WoyTAaCgYKAXoSARESFQHGX2MiuTTdfu6gsuGcr48uQdZ5Rg0169',
         //     authuser: '0',
@@ -82,45 +73,30 @@ function signInWithGoogle() {
         //     scope: 'email profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile openid',
         //     token_type: 'Bearer'
         // }
-        // logic tiếp theo
-        //1: call api để gửi response khi đăng nhập xuống server
-        //2: Thực hiện validate token, lấy thông tin người dùng
-        //3: Thêm/Sửa thông tin người dùng vào database
-        //4: Sinh token riêng của hệ thống, trả về cho client tương tự đăng nhập thành công
+   
+        store.dispatch('auth/loginGoogle', { token: response.access_token}).then(
+            (res) => {
+                let resMessage = null;
+
+                if (!(res && res.success)) {
+                    resMessage = 'Đăng nhập thất bại';
+                    switch (res?.responseCode) {
+                        case '':
+                            break;
+                    }
+                }
+
+                requestLoginDone(resMessage);
+            },
+            (error) => {
+                requestLoginDone(error.message);
+            }
+        );
     });
 }
 
 function signInWithFacebook() {
-    window.FB.login((response) => {
-        if (response && response.authResponse) {
-            console.log('response', response);
-            var userInfo = {
-                loginType: 'fb',
-                fb: {
-                    auth: response.authResponse
-                }
-            };
-            this.$store.commit('setLoginUser', userInfo);
-            window.FB.api(
-                `/${response.authResponse.userID}`,
-                (userResponse) => {
-                    if (userResponse) {
-                        console.log(userResponse);
-                        var userInfo = {
-                            loginType: 'fb',
-                            fb: {
-                                auth: response.authResponse,
-                                user: userResponse
-                            }
-                        };
-                        this.$store.commit('setLoginUser', userInfo);
-                    }
-                },
-                this.params
-            );
-            router.push('/home');
-        }
-    }, this.params);
+    //loginFB
 }
 
 function requestLoginDone(errMessage) {
@@ -131,10 +107,9 @@ function requestLoginDone(errMessage) {
     if (errMessage) {
         message.value = errMessage;
     } else {
-        //Navigate đến trang chính
-        router.push({
-            name: 'dashboard'
-        });
+        //Navigate đến trang sau đăng nhập
+        const returnUrl = router.currentRoute.value.query['returnUrl'] || '/';
+        router.push(returnUrl);
     }
 }
 </script>

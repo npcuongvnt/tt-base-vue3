@@ -20,6 +20,30 @@ export default {
                 }
             );
         },
+        loginGoogle({ commit }, payload) {
+            return AuthService.loginGoogle(payload).then(
+                (user) => {
+                    commit('loginSuccess', user);
+                    return Promise.resolve(user);
+                },
+                (error) => {
+                    commit('loginFailure');
+                    return Promise.reject(error);
+                }
+            );
+        },
+        loginFB({ commit }, payload) {
+            return AuthService.loginFacebook(payload).then(
+                (user) => {
+                    commit('loginSuccess', user);
+                    return Promise.resolve(user);
+                },
+                (error) => {
+                    commit('loginFailure');
+                    return Promise.reject(error);
+                }
+            );
+        },
         logout({ commit }) {
             AuthService.logout();
             commit('logout');

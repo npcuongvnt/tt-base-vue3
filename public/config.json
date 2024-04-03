@@ -11,5 +11,10 @@
         "client_secret": "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",
         "redirect_uris": ["http://localhost:9696/callback"],
         "javascript_origins": ["http://localhost:9696"]
+    },
+
+    "Facebook": {
+        "app_id": "437292258832364",
+        "app_name": ""
     }
 }

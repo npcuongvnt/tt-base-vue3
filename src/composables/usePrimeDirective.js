@@ -3,7 +3,7 @@ import Ripple from 'primevue/ripple';
 import StyleClass from 'primevue/styleclass';
 import Tooltip from 'primevue/tooltip';
 
-export const useDirective = (app) => {
+export const usePrimeDirective = (app) => {
     app.directive('tooltip', Tooltip);
     app.directive('badge', BadgeDirective);
     app.directive('ripple', Ripple);

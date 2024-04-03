@@ -31,6 +31,14 @@ class AuthService {
         return api.post({url: '/login', data: payload});
     }
 
+    loginGoogle(payload) {
+        return api.post({url: '/google/login', data: payload});
+    }
+
+    loginFacebook(payload) {
+        return api.post({url: '/facebook/login', data: payload});
+    }
+
     register(payload) {
         return api.post({url: '/register', data: payload});
     }

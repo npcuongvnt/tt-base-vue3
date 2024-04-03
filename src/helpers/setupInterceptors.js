@@ -1,5 +1,5 @@
 import { AUTH } from "@/common/constant";
-import api from "./api";
+import api from "@/service/api";
 import AuthService from '@/service/auth.service';
 import TokenService from "@/service/token.service";
 
