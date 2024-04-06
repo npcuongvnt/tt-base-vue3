@@ -93,7 +93,7 @@ import VirtualScroller from 'primevue/virtualscroller';
 import BlockViewer from '@/components/BlockViewer.vue';
 import LocaleSwitcher from '@/components/LocaleSwitcher.vue';
 
-export const useComponent = (app) => {
+export const usePrimeComponent = (app) => {
     app.component('BlockViewer', BlockViewer);
     app.component('LocaleSwitcher', LocaleSwitcher);
 

@@ -1,17 +1,18 @@
-import httpClient from './httpClient';
+import api from './api';
 
-export default class baseAPI {
-    /* http://localhost:6969/api/controllerName */
+export default class BaseService {
+    /* http://localhost:8888/api/controllerName */
     baseUrl;
-
     apiName;
-
     controllerName;
 
     constructor() {
         this.baseUrl = '';
         this.apiName = 'BUSINESS_API';
         this.controllerName = '';
+
+        //Set mặc định base URL
+        api.defaults.baseURL = this.getAPIUrl();
     }
 
     initAPIUrl() {
@@ -29,55 +30,28 @@ export default class baseAPI {
     }
 
     paging(payload) {
-        let req = {
-            url: this.getAPIUrl() + '/paging',
-            data: payload
-        };
-
-        return httpClient.postAsync(req);
+        return api.post({url: '/paging', data: payload});
     }
 
     new(payload) {
-        let req = {
-            url: this.getAPIUrl() + '/new',
-            data: payload
-        };
-
-        return httpClient.postAsync(req);
+        return api.post({url: '/new', data: payload});
     }
 
     getById(payload) {
-        let req = {
-            url: `${this.getAPIUrl()}/${payload.id}`
-        };
-
-        return httpClient.getAsync(req);
+        return api.get({url: `/${payload.id}`});
     }
 
     insert(payload) {
-        let req = {
-            url: `${this.getAPIUrl()}/insert`,
-            data: payload
-        };
-
-        return httpClient.postAsync(req);
+        return api.post({url: '/insert', data: payload});
     }
 
     update(payload) {
-        let req = {
-            url: `${this.getAPIUrl()}/update`,
-            data: payload
-        };
-
-        return httpClient.putAsync(req);
+        return api.put({url: '/update', data: payload});
     }
 
     delete(payload) {
-        let req = {
-            url: `${this.getAPIUrl()}`,
-            data: payload
-        };
-
-        return httpClient.deleteAsync(req);
+        return api.delete({url: '', data: payload});
     }
 }
+
+

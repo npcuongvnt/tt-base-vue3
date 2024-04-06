@@ -1,6 +1,7 @@
+import TokenService from "@/service/token.service";
 import AuthService from '@/service/auth.service';
 
-const user = JSON.parse(localStorage.getItem('user'));
+const user = TokenService.getUser();
 const initialState = user ? { status: { loggedIn: true }, user } : { status: { loggedIn: false }, user: null };
 
 export default {
@@ -9,6 +10,30 @@ export default {
     actions: {
         login({ commit }, user) {
             return AuthService.login(user).then(
+                (user) => {
+                    commit('loginSuccess', user);
+                    return Promise.resolve(user);
+                },
+                (error) => {
+                    commit('loginFailure');
+                    return Promise.reject(error);
+                }
+            );
+        },
+        loginGoogle({ commit }, payload) {
+            return AuthService.loginGoogle(payload).then(
+                (user) => {
+                    commit('loginSuccess', user);
+                    return Promise.resolve(user);
+                },
+                (error) => {
+                    commit('loginFailure');
+                    return Promise.reject(error);
+                }
+            );
+        },
+        loginFB({ commit }, payload) {
+            return AuthService.loginFacebook(payload).then(
                 (user) => {
                     commit('loginSuccess', user);
                     return Promise.resolve(user);
@@ -34,6 +59,9 @@ export default {
                     return Promise.reject(error);
                 }
             );
+        },
+        refreshToken({ commit }, accessToken) {
+            commit('refreshToken', accessToken);
         }
     },
     mutations: {
@@ -54,6 +82,10 @@ export default {
         },
         registerFailure(state) {
             state.status.loggedIn = false;
+        },
+        refreshToken(state, accessToken) {
+            state.status.loggedIn = true;
+            state.user = { ...state.user, accessToken: accessToken };
         }
     }
 };

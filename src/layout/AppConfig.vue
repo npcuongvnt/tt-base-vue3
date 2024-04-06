@@ -6,7 +6,7 @@ import Sidebar from 'primevue/sidebar';
 
 import { ref } from 'vue';
 import { useLayout } from '@/layout/composables/layout';
-import LocaleSwitcher from '../components/LocaleSwitcher.vue';
+import LocaleSwitcher from '@/components/LocaleSwitcher.vue';
 
 defineProps({
     simple: {

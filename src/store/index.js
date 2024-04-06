@@ -1,10 +1,10 @@
 import { createStore, createLogger } from 'vuex';
-import auth from './modules/auth';
-import context from './modules/context';
-import user from './modules/user';
-import role from './modules/role';
-import product from './modules/product';
-import example from './modules/example';
+import auth from './modules/auth.module';
+import context from './modules/context.module';
+import user from './modules/user.module';
+import role from './modules/role.module';
+import product from './modules/product.module';
+import example from './modules/example.module';
 
 const debug = import.meta.env.NODE_ENV !== 'production';
 

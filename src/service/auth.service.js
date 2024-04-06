@@ -1,10 +1,22 @@
-import httpClient from './httpClient';
+import api from './api';
 
 class AuthService {
+    /* http://localhost:9999/api/auth */
     baseUrl = '';
 
+    constructor() {
+        this.baseUrl = '';
+        this.apiName = 'AUTH_API';
+        this.controllerName = 'auth'
+
+        //Set mặc định base URL
+        api.defaults.baseURL = this.getAPIUrl();
+    }
+
     initAPIUrl() {
-        this.baseUrl = window.config['AUTH_API'] + '/Auth';
+        if (this.apiName) {
+            this.baseUrl = window.config[this.apiName] + '/' + this.controllerName;
+        }
     }
 
     getAPIUrl() {
@@ -16,27 +28,27 @@ class AuthService {
     }
 
     login(payload) {
-        let req = {
-            url: this.getAPIUrl() + '/login',
-            data: payload
-        };
-        return httpClient.postAsync(req);
+        return api.post({url: '/login', data: payload});
+    }
+
+    loginGoogle(payload) {
+        return api.post({url: '/google/login', data: payload});
+    }
+
+    loginFacebook(payload) {
+        return api.post({url: '/facebook/login', data: payload});
     }
 
     register(payload) {
-        let req = {
-            url: this.getAPIUrl() + '/register',
-            data: payload
-        };
-        return httpClient.postAsync(req);
+        return api.post({url: '/register', data: payload});
     }
 
     logout(payload) {
-        let req = {
-            url: this.getAPIUrl() + '/logout',
-            data: payload
-        };
-        return httpClient.postAsync(req);
+        return api.post({url: '/logout', data: payload});
+    }
+
+    refreshtoken(payload) {
+        return api.post({url: '/refreshtoken', data: payload});
     }
 }
 
