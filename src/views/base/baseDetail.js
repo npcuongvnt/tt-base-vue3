@@ -1,69 +1,52 @@
-import { ref, reactive, onMounted } from 'vue';
-import { useI18n, useStore, useRouter, useRoute, useConfirm, useToast, ENUM, CONSTANT } from '@/composables';
+import { ref, onMounted } from 'vue';
+import { useI18n, useStore, useRouter, useConfirm, useToast, ENUM, CONSTANT } from '@/composables';
 
 export default (config) => {
     const { t } = useI18n();
     const store = useStore();
     const router = useRouter();
-    const route = useRoute();
     const confirm = useConfirm();
     const toast = useToast();
 
+    const module = ref();
     const model = ref({});
     const loading = ref(false);
-    const viewMode = ref(ENUM.ViewMode.ADD);
+    const viewMode = ref();
     const id = ref();
 
-    onMounted(() => {
+    onMounted(async () => {
         console.log('Mounted');
         loading.value = true;
 
         if (config) {
-            viewMode.value = config.viewMode; 
-            id.value = config.id; 
+            viewMode.value = config.viewMode || ENUM.ViewMode.ADD;
+            id.value = config.id;
+            module.value = config.module;
         }
-        
+
         var data = await loadData();
-        
+
         beforeBinding(data);
-        
+
         bindingData(data);
 
         setFormMode(viewMode.value);
     });
 
-    const loadData = async() => {
-        let result = {},
-            param = {
-                id: id.value
-            }
-
-        switch (viewMode.value) {
-            case ENUM.ViewMode.ADD:
-                result = await store.dispatch(`${module}/new`, param);
-                break;
-            case ENUM.ViewMode.EDIT:
-                result = await store.dispatch(`${module}/getById`, param);
-                break;
-        }
-
-        return result;
-    };
-
     const beforeBinding = (data) => {
-
-    },
+        console.log(data);
+    };
 
     const bindingData = (data) => {
         model.value = data;
-    },
+    };
 
     const setFormMode = (mode) => {
         viewMode.value = mode;
 
         //unmask
         loading.value = false;
-    },
+    };
 
     const onCommandClick = (commandName) => {
         switch (commandName) {
@@ -78,12 +61,11 @@ export default (config) => {
                 break;
             case CONSTANT.CommandName.BACK:
                 back();
-                break;                
+                break;
         }
     };
 
     const save = (fnCallback) => {
-
         //TODO
 
         if (typeof fnCallback === 'function') {
@@ -92,12 +74,13 @@ export default (config) => {
     };
 
     const edit = () => {
-
         //TODO
     };
 
+    const checkChange = () => {};
+
     const deletes = () => {
-        let datas = [model.value]
+        let datas = [model.value];
 
         confirm.require({
             header: t('message.HeaderDelete'),
@@ -131,9 +114,8 @@ export default (config) => {
 
     const back = () => {
         let doBack = true;
-        if (viewMode.value === ENUM.ViewMode.ADD || viewMode.value === ENUM.ViewMode.EDIT) 
-        {
-            if(checkChange()) {
+        if (viewMode.value === ENUM.ViewMode.ADD || viewMode.value === ENUM.ViewMode.EDIT) {
+            if (checkChange()) {
                 doBack = false;
             }
         }
@@ -151,7 +133,7 @@ export default (config) => {
                 accept: () => {
                     const fnCallback = () => {
                         router.back();
-                    }
+                    };
                     save(fnCallback);
                 },
                 reject: () => {
@@ -159,6 +141,24 @@ export default (config) => {
                 }
             });
         }
+    };
+
+    const loadData = async () => {
+        let result = {},
+            param = {
+                id: id.value
+            };
+
+        switch (viewMode.value) {
+            case ENUM.ViewMode.ADD:
+                result = await store.dispatch(`${module.value}/new`, param);
+                break;
+            case ENUM.ViewMode.EDIT:
+                result = await store.dispatch(`${module.value}/getById`, param);
+                break;
+        }
+
+        return result;
     };
 
     return {

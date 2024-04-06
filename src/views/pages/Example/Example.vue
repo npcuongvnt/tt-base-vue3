@@ -1,15 +1,11 @@
 <script setup>
-import { ref } from 'vue';
-import { router, route, ENUM } from '@/composables';
+import { ref, onMounted } from 'vue';
+import { ENUM, CONSTANT } from '@/composables';
 import useBaseDetail from '@/views/base/baseDetail';
 
-const router = useRouter();
-const route = useRoute();
+const id = ref(1);
 
-const viewMode = ref(ENUM.ViewMode.ADD);
-const id = ref(ENUM.ViewMode.ADD);
-
-const { model, viewMode, onCommandClick } = useBaseDetail({ viewMode: viewMode.value, id: id.value });
+const { model, onCommandClick } = useBaseDetail({ viewMode: ENUM.ViewMode.ADD, module: 'example', id: id.value });
 
 const dropdownItems = ref([
     { name: 'Option 1', code: 'Option 1' },
@@ -22,7 +18,6 @@ const dropdownItem = ref(null);
 onMounted(() => {
     console.log('Example Mounted');
 });
-
 </script>
 
 <template>
@@ -34,9 +29,9 @@ onMounted(() => {
                 <Button icon="pi pi-arrow-left" class="p-button-sm" @click="onCommandClick(CONSTANT.CommandName.BACK)" />
             </template>
             <template v-slot:end>
-                <Button label="Sửa" icon="pi pi-pencil" class="mr-2" disabled @click="onCommandClick(CONSTANT.CommandName.EDIT)"/>
-                <Button label="Lưu" icon="pi pi-save" class="p-button-success mr-2" @click="onCommandClick(CONSTANT.CommandName.SAVE)"/>
-                <Button label="Xóa" icon="pi pi-trash" class="p-button-danger mr-2" @click="onCommandClick(CONSTANT.CommandName.DELETE)"/>
+                <Button label="Sửa" icon="pi pi-pencil" class="mr-2" disabled @click="onCommandClick(CONSTANT.CommandName.EDIT)" />
+                <Button label="Lưu" icon="pi pi-save" class="p-button-success mr-2" @click="onCommandClick(CONSTANT.CommandName.SAVE)" />
+                <Button label="Xóa" icon="pi pi-trash" class="p-button-danger mr-2" @click="onCommandClick(CONSTANT.CommandName.DELETE)" />
             </template>
         </Toolbar>
     </div>
@@ -46,7 +41,7 @@ onMounted(() => {
             <div class="p-fluid formgrid grid">
                 <div class="field col-12 md:col-6">
                     <label for="firstname2">Firstname</label>
-                    <InputText id="firstname2" type="text" />
+                    <InputText id="firstname2" type="text" v-model="model.example_name" />
                 </div>
                 <div class="field col-12 md:col-6">
                     <label for="lastname2">Lastname</label>
@@ -62,7 +57,8 @@ onMounted(() => {
                 </div>
                 <div class="field col-12 md:col-3">
                     <label for="state">State</label>
-                    <Dropdown id="state" v-model="dropdownItem" :options="dropdownItems" optionLabel="name" placeholder="Select One"></Dropdown>
+                    <Dropdown id="state" v-model="dropdownItem" :options="dropdownItems" optionLabel="name"
+                        placeholder="Select One"></Dropdown>
                 </div>
                 <div class="field col-12 md:col-3">
                     <label for="zip">Zip</label>

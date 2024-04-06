@@ -10,11 +10,11 @@ export default (config) => {
     const toast = useToast();
     const { fe2be } = usePagingParam();
 
-    const dataKey = ref();
+    const dataKey = ref('');
     const loading = ref(false);
-    const listRecords = ref();
+    const listRecords = ref([]);
     const totalRecords = ref(0);
-    const selectedRecords = ref();
+    const selectedRecords = ref([]);
 
     const { module, columns } = config;
     const filters = ref({ ...columns.value });
@@ -34,8 +34,6 @@ export default (config) => {
     });
 
     onMounted(() => {
-        console.log('Mounted');
-
         loadPagingData();
     });
 
@@ -136,7 +134,7 @@ export default (config) => {
         console.log(data);
     };
 
-    showDetail = (mode, id) => {
+    const showDetail = (mode, id) => {
         router.push({
             path: `${route.path}/${id}`,
             meta: {
@@ -199,6 +197,7 @@ export default (config) => {
         onSort,
         onFilter,
         onSearchInputKeyDown,
-        onCommandClick
+        onCommandClick,
+        showDetail
     };
 };

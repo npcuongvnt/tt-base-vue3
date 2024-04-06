@@ -13,9 +13,9 @@ const AUTH = {
 };
 
 const CONTENT_TYPE = {
-    ApplicationJSON = 'application/json',
-    FormUrlEncoded = 'application/x-www-form-urlencoded',
-    FormMultiPart = 'multipart/form-data'
+    ApplicationJSON: 'application/json',
+    FormUrlEncoded: 'application/x-www-form-urlencoded',
+    FormMultiPart: 'multipart/form-data'
 };
 
 /**
