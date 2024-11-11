@@ -1,11 +1,11 @@
 import { ref, onMounted } from 'vue';
-import { useI18n, useStore, useRouter, useConfirm, useToast, ENUM, CONSTANT } from '@/composables';
+import { useI18n, useStore, useRouter, useToast, ENUM, CONSTANT } from '@/composables';
 
 export default (config) => {
     const { t } = useI18n();
     const store = useStore();
     const router = useRouter();
-    const confirm = useConfirm();
+    // const confirm = useConfirm();
     const toast = useToast();
 
     const module = ref();

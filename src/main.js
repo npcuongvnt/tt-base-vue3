@@ -9,9 +9,9 @@ import { usePrimeService } from './composables/usePrimeService';
 import { usePrimeDirective } from './composables/usePrimeDirective';
 import setupInterceptors from './helpers/setupInterceptors';
 import vue3GoogleLogin from 'vue3-google-login';
-import { initFacebookSdk } from './helpers';
+// import { initFacebookSdk } from './helpers';
 
-import 'primevue/resources/themes/aura-light-green/theme.css';
+// import 'primevue/resources/themes/aura-light-green/theme.css';
 import '@/assets/styles.scss';
 
 const app = createApp(App);
@@ -43,7 +43,7 @@ fetch(import.meta.env.BASE_URL + 'config.json')
             clientId: config.Google.client_id
         });
 
-        initFacebookSdk(config.Facebook);
+        // initFacebookSdk(config.Facebook);
     })
     .then(() => {
         // FINALLY, mount the app

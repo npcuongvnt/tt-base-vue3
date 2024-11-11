@@ -1,12 +1,12 @@
 import { ref, onMounted } from 'vue';
-import { useI18n, useStore, useRouter, useRoute, useConfirm, useToast, usePagingParam, ENUM, CONSTANT } from '@/composables';
+import { useI18n, useStore, useRouter, useRoute, useToast, usePagingParam, ENUM, CONSTANT } from '@/composables';
 
 export default (config) => {
     const { t } = useI18n();
     const store = useStore();
     const router = useRouter();
     const route = useRoute();
-    const confirm = useConfirm();
+    // const confirm = useConfirm();
     const toast = useToast();
     const { fe2be } = usePagingParam();
 

@@ -1,15 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
 
 $gutter: 1rem; //for primeflex grid system
-@import '@/assets/layout/layout.scss';
+@use '@/assets/layout/layout.scss';
 
 /* PrimeVue */
-// @import 'primevue/resources/primevue.min.css'; // version deplicated. You must open the command line if you are using < 3.29.00
-@import 'primeflex/primeflex.scss';
-@import 'primeicons/primeicons.css';
+@use 'primevue/resources/primevue.min.css'; // version deplicated. You must open the command line if you are using < 3.29.00
+@use 'primeflex/primeflex.scss';
+@use 'primeicons/primeicons.css';
 
 /* Demos */
-@import '@/assets/demo/demo.scss';
+@use '@/assets/demo/demo.scss';
 
 /* Override */
-@import '@/assets/toolbar.scss';
+@use '@/assets/toolbar.scss';
